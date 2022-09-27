@@ -17,3 +17,7 @@ WIWOSM project was developed by:
 * @harry-wood (Harry Wood)
 
 For language contributors see file headers in `Lang` directory.
+
+For a copy of license of [Extension:CLDR](https://www.mediawiki.org/wiki/Extension:CLDR) see `cldr/LICENSE`.
+
+The project is of course using [OpenStreetMap](https://wiki.openstreetmap.org/wiki/) and is using [OpenLayers library](https://openlayers.org/).
