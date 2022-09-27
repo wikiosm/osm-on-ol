@@ -1,0 +1,2 @@
+# hide repos
+RedirectMatch 404 /\.git
