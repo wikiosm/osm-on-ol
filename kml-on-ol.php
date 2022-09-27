@@ -227,7 +227,7 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 
 				var urlRegex = new RegExp('^//([abc]).toolserver.org/tiles/([^/]+)/(.*)$');
 
-                                var osm = new OpenLayers.Layer.OSM.Toolserver('osm', {
+                                var osm = new OpenLayers.Layer.OSM('osm', "//tiles.wmflabs.org/osm/${z}/${x}/${y}.png",{ 
 					attribution:'<?php echo translate('map-by',$uselang);?> <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap',$uselang);?></a> (<a target="_blank" href="//creativecommons.org/publicdomain/zero/1.0/">CC0</a>)',
 					transitionEffect: 'resize',
 					tileOptions: {
@@ -277,11 +277,9 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 				  map.addLayer(new OpenLayers.Layer.OSM("OSM.org",
 					"//a.tile.openstreetmap.org/${z}/${x}/${y}.png",
 					{visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-
-
-						  
+		  
 								                                
-				map.addLayer(new OpenLayers.Layer.OSM.Toolserver('hikebike', { tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize',attribution:'<?php echo translate('map-by',$uselang);?> <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap',$uselang);?></a> (<a target="_blank" href="//creativecommons.org/publicdomain/zero/1.0/">CC-0</a>)' } ));
+				map.addLayer(new OpenLayers.Layer.OSM('hikebike', "//tiles.wmflabs.org/hikebike/${z}/${x}/${y}.png", { tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize',attribution:'<?php echo translate('map-by',$uselang);?> <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap',$uselang);?></a> (<a target="_blank" href="//creativecommons.org/publicdomain/zero/1.0/">CC-0</a>)' } ));
 
 				map.addLayer(new OpenLayers.Layer.OSM("Public Transport (&Ouml;PNV)",
 					"http://tile.memomaps.de/tilegen/${z}/${x}/${y}.png",  {visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
@@ -299,7 +297,7 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 				<?php if($lang=="de" and empty($_SERVER["HTTP_X_TS_SSL"])) {echo "map.addLayer(new OpenLayers.Layer.OSM('germany','http://tile.openstreetmap.de/tiles/osmde/".'${z}/${x}/${y}'.".png',  {visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));";}?>
                                   
                
-		 osmLabelsLang = new OpenLayers.Layer.OSM.Toolserver('osm-labels-<?php echo $lang;?>', {isBaseLayer: false, visibility: false, tileOptions: { crossOriginKeyword: null }, attribution:''});
+		 osmLabelsLang = new OpenLayers.Layer.OSM('osm-labels-<?php echo $lang;?>',"//tiles.wmflabs.org/osm-multilingual/<?php echo $lang;?>,_/${z}/${x}/${y}.png", {isBaseLayer: false, visibility: false, tileOptions: { crossOriginKeyword: null }, attribution:''});
 		map.addLayers([osmLabelsLang]);
 
 
@@ -614,7 +612,7 @@ END;
 
  				map.addLayer(new OpenLayers.Layer.OSM(
 					'hillshading', 
-					'//toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png',
+					'//tiles.wmflabs.org/hillshading/${z}/${x}/${y}.png',
 					{       attribution:'NASA',
 						displayOutsideMaxExtent: true, 
 						isBaseLayer: false,
