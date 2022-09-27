@@ -232,7 +232,7 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 
 				var urlRegex = new RegExp('^//([abc]).toolserver.org/tiles/([^/]+)/(.*)$');
 
-                                var osm = new OpenLayers.Layer.OSM('osm', "//tiles.wmflabs.org/osm/${z}/${x}/${y}.png",{ 
+                                var osm = new OpenLayers.Layer.OSM('osm', "//maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",{ 
 					attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
 					transitionEffect: 'resize',
 					tileOptions: {
@@ -291,15 +291,8 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 					visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
 				
 								                                
-				map.addLayer(new OpenLayers.Layer.OSM('hikebike', "//tiles.wmflabs.org/hikebike/${z}/${x}/${y}.png", { tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize',attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>' } ));
-
 				map.addLayer(new OpenLayers.Layer.OSM("Public Transport (&Ouml;PNV)",
 					"http://tile.memomaps.de/tilegen/${z}/${x}/${y}.png",  {attribution:'Map © OpenStreetMap contributors',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-
-				map.addLayer(new OpenLayers.Layer.TMS("Satellite",
-					"http://tools.wmflabs.org/wp-world/bluemarble/tiles/",  
-					  {attribution:'NASA (Blue Marbel)/CC-BY Unearthed Outdoors, LLC (True Marble)', type: 'jpg', serviceVersion:'',layername:'',
-					visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
 				
 				//map.addLayer(new OpenLayers.Layer.OSM("hires",	 
 				//	 "//mull.geofabrik.de/osm2x/${z}/${x}/${y}.png",
@@ -321,7 +314,7 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 
 
     poiLayerHttp = new OpenLayers.Protocol.HTTP({
-        url: "//tools.wmflabs.org/wp-world/marks.php?",
+        url: "//wp-world.toolforge.org/marks.php?",
         params: { 'LANG' : <?php echo "'".$langwiki."'".$coatsinsert.$thumbsinsert.$popinsert.$styleinsert.$photoinsert.$sourceinsert.$notsourceinsert.$classesinsert;?>},
         format: new OpenLayers.Format.KML({
             extractStyles: true, 
@@ -341,7 +334,7 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 <?php 
 if ($title and detect_not_ie()){
 if ($action=='purge') {$actionurl="&action=purge";}
-$vecfile='"'."//tools.wmflabs.org/wiwosm/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
+$vecfile='"'."//wiwosm.toolforge.org/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
 
 print <<<END
     //OSM objects Layer : Object with the Wikipedia-Tag matching with article-name
@@ -520,12 +513,12 @@ END;
       } 
  
       // below zoom 6 we switch from layer "osm" to layer "osm-no-labels" + "osm-labels-de"
-      if((map.getZoom() <= 6 || forcelocal) && map.baseLayer.id == osm.id)
+      if((map.getZoom() <= -6 || forcelocal) && map.baseLayer.id == osm.id)
       { 
           map.setBaseLayer(osmNoLabels);
           osmLabelsLang.setVisibility(true);
       }
-      if(map.getZoom() <= 6 || forcelocal)
+      if(map.getZoom() <= - 6 || forcelocal)
       {
 	  osmLabelsLang.displayInLayerSwitcher=true;
 	  
@@ -533,12 +526,12 @@ END;
       }
       
       // above zoom 6 we switch back to the usual osm layer
-      else if(map.getZoom() > 6 && map.baseLayer.id == osmNoLabels.id  && !forcelocal)
+      else if(map.getZoom() > -6 && map.baseLayer.id == osmNoLabels.id  && !forcelocal)
       {   
           map.setBaseLayer(osm);
           osmLabelsLang.setVisibility(false);
       }
-      if(map.getZoom() > 6  && !forcelocal && map.baseLayer.id == osm.id)
+      if(map.getZoom() > -6  && !forcelocal && map.baseLayer.id == osm.id)
       { 
 	  osmLabelsLang.displayInLayerSwitcher=false; 
 	  osmNoLabels.displayInLayerSwitcher=false;
@@ -620,21 +613,6 @@ END;
             var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
             var icon = new OpenLayers.Icon('Ol_icon_red_example.png',size,offset);
             markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(map.center.lon,map.center.lat),icon));
-
-
- 				map.addLayer(new OpenLayers.Layer.OSM(
-					'hillshading', 
-					'//tiles.wmflabs.org/hillshading/${z}/${x}/${y}.png',
-					{       attribution:'NASA',
-						displayOutsideMaxExtent: true, 
-						isBaseLayer: false,
-						transparent: true, 
-						visibility: false, 
-						numZoomLevels: 16,
-						tileOptions: { crossOriginKeyword: null }
-					} 
-					));
-
 			}
 
 
