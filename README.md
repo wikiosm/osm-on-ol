@@ -11,7 +11,7 @@ https://wiki.openstreetmap.org/wiki/WIWOSM
 
 WIWOSM project was developed by:
 
-* @aiomaster (Christoph Wagner)
+* @aiomaster aka Retsam (Christoph Wagner)
 * @kolossos
 * @simon04 (Simon Legner)
 * @harry-wood (Harry Wood)
