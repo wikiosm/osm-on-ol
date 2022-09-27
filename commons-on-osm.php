@@ -25,10 +25,10 @@ if ( isset ( $_REQUEST['params'] ) ) {
 }
 
 ?>
-        <script src="//tools.wmflabs.org/osm/libs/jquery/latest/jquery-min.js" type="text/javascript"></script>
-        <script src="//tools.wmflabs.org/osm/libs/openlayers/2.12/OpenLayers-min.js" type="text/javascript"></script>
+        <script src="https://osm.toolforge.org/libs/jquery/latest/jquery-min.js" type="text/javascript"></script>
+        <script src="https://osm.toolforge.org/libs/openlayers/2.12/OpenLayers-min.js" type="text/javascript"></script>
 
-        <script src="//tools.wmflabs.org/osm/libs/openstreetmap/latest/OpenStreetMap.js"></script>
+        <script src="https://osm.toolforge.org/libs/openstreetmap/latest/OpenStreetMap.js"></script>
 
         <script type="text/javascript">
 // map object
@@ -93,7 +93,7 @@ function init()
         initialize: function(name, options) {
             var url = [
                 //"//tiles.wmflabs.org/" + name + "/${z}/${x}/${y}.png"
-		"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png"
+				"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png"
             ];
 
             options = OpenLayers.Util.extend({numZoomLevels: 19}, options);
@@ -123,9 +123,8 @@ function init()
         strategies: [bboxStrategy],
         protocol:
             new OpenLayers.Protocol.HTTP({
-                url: "//tools.wmflabs.org/geocommons/kml",
+                url: "https://geocommons.toolforge.org/kml",
                 /* url: "//toolserver.org/~para/GeoCommons/kml.php?f=photos&simple",*/
-                /*url: "http://toolserver.org/~kolossos/geoworld/marks.php?LANG=<?php echo $lang;?>",*/
                 /*url: "GeoworldProxy?lang=de",*/
                 format: new OpenLayers.Format.KML({
                            extractStyles: true,

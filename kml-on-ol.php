@@ -127,8 +127,8 @@ if ($x<>""){$position.="
 echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\n";
 // Geohack end
 ?>
-		<script src="//tools.wmflabs.org/osm/libs/jquery/latest/jquery-min.js" type="text/javascript"></script>
-		<script src="//tools.wmflabs.org/osm/libs/openlayers/2.12/OpenLayers.js" type="text/javascript"></script>
+		<script src="https://osm.toolforge.org/libs/jquery/latest/jquery-min.js" type="text/javascript"></script>
+		<script src="https://osm.toolforge.org/libs/openlayers/2.12/OpenLayers.js" type="text/javascript"></script>
 <!--script src="//openlayers.org/dev/OpenLayers.js" type="text/javascript"></script-->
 		<!--script src="//toolserver.org/~osm/libs/openstreetmap/latest/OpenStreetMap.js" type="text/javascript"></script-->
 		<script src="./Lang/<?php echo $uselang;?>.js" type="text/javascript"></script>
