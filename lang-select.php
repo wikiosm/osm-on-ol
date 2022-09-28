@@ -1,17 +1,7 @@
 <?php
+require_once ( "helpers.php" ) ;
 
-function translate($word,$lang)
-{
-include "kml-on-ol.i18n.php";
-$withprefix="ts-kml-on-ol-".$word;
-$a=$messages[$lang][$withprefix];
-if (!isset($a)){$a=$messages['en'][$withprefix];}
-#print_r ($messages);
-#echo "<!---".$a."-| $withprefix -->";
-return $a;
-}
-
-$uselang=addslashes(urldecode($_GET['lang']));
+$uselang=addslashes(urldecode(param_get('lang', 'en')));
 
 $langCapital=ucwords($uselang);
 

@@ -11,37 +11,10 @@
 #License:GPL
 
 require_once ( "geo_param.php" ) ;
+require_once ( "helpers.php" ) ;
 @include "mapsources.php" ;	// Nux: Seems to be missing... Is that needed?
 
 $TSisDOWN=0;
-
-function translate($word,$lang)
-{
-	include "kml-on-ol.i18n.php";
-	$withprefix="ts-kml-on-ol-".$word;
-	if (!isset($messages[$lang])) {
-		$lang = 'en';
-	}
-	$a = isset($messages[$lang][$withprefix]) ? $messages[$lang][$withprefix] : $word;
-	return $a;
-}
-
-function detect_not_ie()
-{
-    if (isset($_SERVER['HTTP_USER_AGENT']) && 
-    (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false))
-        return false;
-    else
-        return true;
-}
-/** Safe $_GET. */
-function param_get($name, $default='') {
-	return isset($_GET[$name]) ? $_GET[$name] : $default;
-}
-/** Safe $_REQUEST. */
-function param_req($name, $default='') {
-	return isset($_REQUEST[$name]) ? $_GET[$name] : $default;
-}
 
 $lang=addslashes(urldecode(param_get('lang', 'en')));
 $uselang=addslashes(urldecode(param_get('uselang')));

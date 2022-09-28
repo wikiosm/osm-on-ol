@@ -14,8 +14,10 @@
 
 <?php
 require_once ( "geo_param.php" ) ;
-$lang=addslashes(urldecode($_GET[lang]));
+require_once ( "helpers.php" ) ;
+$lang=addslashes(urldecode(param_get('lang', 'en')));
 
+$position = '';
 if ( isset ( $_REQUEST['params'] ) ) {
     $p = new geo_param(  $_REQUEST['params'] , "Dummy" );
     $x = $p->londeg ;
