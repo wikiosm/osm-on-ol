@@ -22,7 +22,7 @@ class geo_param {
 	 *   Constructor:
 	 *   Read coordinates, and if there is a range, read the range
 	 */
-	function geo_param( $param )
+	function __construct( $param )
 	{
 		$this->pieces = explode(" ", str_replace ( ' O' , ' E' , str_replace( '_', ' ', $param )));
 		$this->get_coor( );
