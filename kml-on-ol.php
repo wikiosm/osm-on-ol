@@ -3,8 +3,6 @@
 	<head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title>Wikipedia on OpenStreetMap</title>
-		
-		
 
 <?php
 #Contributors: Kolossos, Peter Körner, Alexrk2, Magnus Manske, master 
@@ -13,19 +11,19 @@
 #License:GPL
 
 require_once ( "geo_param.php" ) ;
-include "mapsources.php" ;
+@include "mapsources.php" ;	// Nux: Seems to be missing... Is that needed?
 
 $TSisDOWN=0;
 
 function translate($word,$lang)
 {
-include "kml-on-ol.i18n.php";
-$withprefix="ts-kml-on-ol-".$word;
-$a=$messages[$lang][$withprefix];
-if (!isset($a)){$a=$messages['en'][$withprefix];}
-#print_r ($messages);
-#echo "<!---".$a."-| $withprefix -->";
-return $a;
+	include "kml-on-ol.i18n.php";
+	$withprefix="ts-kml-on-ol-".$word;
+	if (!isset($messages[$lang])) {
+		$lang = 'en';
+	}
+	$a = isset($messages[$lang][$withprefix]) ? $messages[$lang][$withprefix] : $word;
+	return $a;
 }
 
 function detect_not_ie()
@@ -36,39 +34,50 @@ function detect_not_ie()
     else
         return true;
 }
+/** Safe $_GET. */
+function param_get($name, $default='') {
+	return isset($_GET[$name]) ? $_GET[$name] : $default;
+}
+/** Safe $_REQUEST. */
+function param_req($name, $default='') {
+	return isset($_REQUEST[$name]) ? $_GET[$name] : $default;
+}
 
-$lang=addslashes(urldecode($_GET['lang']));
-$uselang=addslashes(urldecode($_GET['uselang']));
+$lang=addslashes(urldecode(param_get('lang', 'en')));
+$uselang=addslashes(urldecode(param_get('uselang')));
 if ($uselang=="") {$uselang=$lang;}
 if ($lang=="wikidata") {$langwiki=$uselang;} else {$langwiki=$lang;}
 
-$thumbs=addslashes($_GET['thumbs']);
+$coatsinsert=$thumbsinsert=$popinsert=$styleinsert=$photoinsert=$sourceinsert=$notsourceinsert=$classesinsert = '';
+$thumbs=addslashes(param_get('thumbs'));
 if (($thumbs=="no") or ($thumbs=="yes")) {$thumbsinsert=", 'thumbs' : '$thumbs'";} else {$thumbsinsert=", 'thumbs' : '0'";}
-$coats=addslashes($_GET['coats']);
+$coats=addslashes(param_get('coats'));
 if (($coats=="no") or ($coats=="yes")) {$coatsinsert=", 'coats' : '$coats'";} else {$coatsinsert=", 'coats' : '0'";}
-$pop=addslashes($_GET['pop']);
+$pop=addslashes(param_get('pop'));
 if (($pop<>"")) {$popinsert=", 'pop' : '$pop'";} 
-$style=addslashes($_GET['style']);
+$style=addslashes(param_get('style'));
 if (($style<>"")) {$styleinsert=", 'style' : '$style'";}
-$photo=addslashes($_GET['photo']);
+$photo=addslashes(param_get('photo'));
 if (($photo=="no") or ($photo=="yes")) {$photoinsert=", 'photo' : '$photo'";}
-$source=addslashes($_GET['source']);
+$source=addslashes(param_get('source'));
 if (($source<>"")) {$sourceinsert=", 'source' : '$source'";} 
-$notsource=addslashes($_GET['notsource']);
+$notsource=addslashes(param_get('notsource'));
 if (($notsource<>"")) {$notsourceinsert=", 'notsource' : '$notsource'";} 
 
-$title=urldecode($_GET['title']);
-$action=addslashes(urldecode($_GET['action']));
+$title=urldecode(param_get('title'));
+$action=addslashes(urldecode(param_get('action')));
 
-$title=urldecode($_GET['title']);
-if ($title=="") {$title=urldecode($_GET['pagename']);} #hack for nl.wp
+$title=urldecode(param_get('title'));
+if ($title=="") {$title=urldecode(param_get('pagename'));} #hack for nl.wp
 
-$classes=urldecode($_GET['classes']);
+$classes=urldecode(param_get('classes'));
 if ($classes<>"") {$classesinsert=", 'classes' : '$classes'";} 
 
 // Geohack
 
+$theparams = '';
 if ( isset ( $_REQUEST['params'] ) ) {
+	$theparams =$_REQUEST['params'];
 	$p = new geo_param(  $_REQUEST['params'] , "Dummy" ); ;
 	$x = floatval($p->londeg) ;
 	$y = floatval($p->latdeg) ;
@@ -78,7 +87,6 @@ if ( isset ( $_REQUEST['params'] ) ) {
 
 }
 
-$theparams =$_REQUEST['params'];
 $typeleftcut = strstr($theparams,"type:");
 $type = substr ($typeleftcut, 5 );
 if (strpos($type,"(")>0) {$type = substr($type,0,strpos($type,"("));}
@@ -105,6 +113,9 @@ $default_scale = array(
 					'pass'      =>     10000, # 10 thousand
 					'landmark'  =>     10000  # 10 thousand
 				);
+if (!isset($default_scale[$type])) {
+	$type = 'city';
+}
 $zoomtype=18 - ( round(log($default_scale[$type],2) - log(1693,2)) );
 
 $dimleftcut = strstr($theparams,"dim:");
@@ -120,7 +131,7 @@ if ($zoomtype>18) {$zoom=18;$zoomtype=18;}
 if ($zoomtype>2 ) {$zoom=$zoomtype;} else {$zoom=12;}
 
 $position= "  var zoom = $zoom;";
-if ($x<>""){$position.="
+if (!empty($x)){$position.="
 		args.lon = $x;
 		args.lat = $y; ";}
 
