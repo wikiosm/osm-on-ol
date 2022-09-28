@@ -37,33 +37,33 @@ function detect_not_ie()
         return true;
 }
 
-$lang=addslashes(urldecode($_GET[lang]));
-$uselang=addslashes(urldecode($_GET[uselang]));
+$lang=addslashes(urldecode($_GET['lang']));
+$uselang=addslashes(urldecode($_GET['uselang']));
 if ($uselang=="") {$uselang=$lang;}
 if ($lang=="wikidata") {$langwiki=$uselang;} else {$langwiki=$lang;}
 
-$thumbs=addslashes($_GET[thumbs]);
+$thumbs=addslashes($_GET['thumbs']);
 if (($thumbs=="no") or ($thumbs=="yes")) {$thumbsinsert=", 'thumbs' : '$thumbs'";} else {$thumbsinsert=", 'thumbs' : '0'";}
-$coats=addslashes($_GET[coats]);
+$coats=addslashes($_GET['coats']);
 if (($coats=="no") or ($coats=="yes")) {$coatsinsert=", 'coats' : '$coats'";} else {$coatsinsert=", 'coats' : '0'";}
-$pop=addslashes($_GET[pop]);
+$pop=addslashes($_GET['pop']);
 if (($pop<>"")) {$popinsert=", 'pop' : '$pop'";} 
-$style=addslashes($_GET[style]);
+$style=addslashes($_GET['style']);
 if (($style<>"")) {$styleinsert=", 'style' : '$style'";}
-$photo=addslashes($_GET[photo]);
+$photo=addslashes($_GET['photo']);
 if (($photo=="no") or ($photo=="yes")) {$photoinsert=", 'photo' : '$photo'";}
-$source=addslashes($_GET[source]);
+$source=addslashes($_GET['source']);
 if (($source<>"")) {$sourceinsert=", 'source' : '$source'";} 
-$notsource=addslashes($_GET[notsource]);
+$notsource=addslashes($_GET['notsource']);
 if (($notsource<>"")) {$notsourceinsert=", 'notsource' : '$notsource'";} 
 
-$title=urldecode($_GET[title]);
-$action=addslashes(urldecode($_GET[action]));
+$title=urldecode($_GET['title']);
+$action=addslashes(urldecode($_GET['action']));
 
-$title=urldecode($_GET[title]);
-if ($title=="") {$title=urldecode($_GET[pagename]);} #hack for nl.wp
+$title=urldecode($_GET['title']);
+if ($title=="") {$title=urldecode($_GET['pagename']);} #hack for nl.wp
 
-$classes=urldecode($_GET[classes]);
+$classes=urldecode($_GET['classes']);
 if ($classes<>"") {$classesinsert=", 'classes' : '$classes'";} 
 
 // Geohack
