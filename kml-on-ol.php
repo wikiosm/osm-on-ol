@@ -81,10 +81,6 @@ if ( isset ( $_REQUEST['params'] ) ) {
 	$p = new geo_param(  $_REQUEST['params'] , "Dummy" ); ;
 	$x = floatval($p->londeg) ;
 	$y = floatval($p->latdeg) ;
-
-	$type = substr($p->type,0,10) ; 
-	$dim= floatval($p->dim) ;  
-
 }
 
 $typeleftcut = strstr($theparams,"type:");
@@ -344,6 +340,7 @@ echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\
 
 <?php 
 if ($title and detect_not_ie()){
+$actionurl = '';
 if ($action=='purge') {$actionurl="&action=purge";}
 $vecfile='"'."//wiwosm.toolforge.org/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
 
