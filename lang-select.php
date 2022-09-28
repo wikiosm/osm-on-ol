@@ -11,7 +11,7 @@ if (!isset($a)){$a=$messages['en'][$withprefix];}
 return $a;
 }
 
-$uselang=addslashes(urldecode($_GET[lang]));
+$uselang=addslashes(urldecode($_GET['lang']));
 
 $langCapital=ucwords($uselang);
 
@@ -50,7 +50,8 @@ echo '<select class="menuSelectlist" name="top5" size="5">
 <option value=""> '.translate('all',$uselang).'  </option>';
 foreach ($alllangs_red as $key => $la) {
 if ($la==$uselang) {$select=" selected ";} else  {$select="";}
-echo '<option '.$select.' value="'.$la.'">'.$names[$la]."\t(".$la.")</option>\n";
+	$name = empty($names[$la]) ? $la : $names[$la]."\t(".$la.")";
+	echo "<option $select value='$la'>$name</option>\n";
 }
 echo '</select>';
 ?>
