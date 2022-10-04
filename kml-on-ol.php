@@ -55,6 +55,11 @@ if ( isset ( $_REQUEST['params'] ) ) {
 	$x = floatval($p->londeg) ;
 	$y = floatval($p->latdeg) ;
 }
+// overwrite lat&lon from perm-link params
+if ( isset ( $_GET['lat'] ) && isset ( $_GET['lon'] ) ) {
+	$x = floatval($_GET['lon']) ;
+	$y = floatval($_GET['lat']) ;
+}
 
 $typeleftcut = strstr($theparams,"type:");
 $type = substr ($typeleftcut, 5 );
