@@ -326,59 +326,57 @@ function init()
 
 <?php 
 if ($title and detect_not_ie()){
-$actionurl = '';
-if ($action=='purge') {$actionurl="&action=purge";}
-$vecfile='"'."//wiwosm.toolforge.org/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
-
-print <<<END
-    //OSM objects Layer : Object with the Wikipedia-Tag matching with article-name
-
-    var styleMap = new OpenLayers.StyleMap({'pointRadius': 7,
-					    'strokeWidth': 3,
-					    'strokeColor': '#ff0000',
-					    'fillColor': '#ff0000',
-					    'fillOpacity': .3
-                         });
-
-    var vector_layer = new OpenLayers.Layer.Vector("OSM objects (loading...)",{
-				styleMap: styleMap,
-				attribution:' <a target="_blank" href="//wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (<a target="_blank" href="//opendatacommons.org/licenses/odbl/">ODbL</a>) '
-       
-									    });
-    map.addLayer(vector_layer);
-
-    var JSONurl = $vecfile;
-    //alert ("$lang $title");
-    var p = new OpenLayers.Format.GeoJSON();
-
-    OpenLayers.Request.GET({url:JSONurl, 
-			    callback:function (response) {
-
-    if(response.status == 404) {
-        vector_layer.setVisibility(false);
-	vector_layer.setName("OSM objects (not found)");
-			      }
-    else {
-    var gformat = new OpenLayers.Format.GeoJSON();
-    gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
-	  response.responseText + '}]}';
-    var feats = gformat.read(gg);
-
-    vector_layer.addFeatures(feats);
-    vector_layer.setName("OSM objects (WIWOSM)");
-    document.title = args.title+" on OpenStreetMap";
-
-      if (vector_layer.getDataExtent().getHeight()>500) 
-	{ map.zoomToExtent (vector_layer.getDataExtent(),false);} 
-     
-     if (!args.lon && vector_layer.getDataExtent().getHeight()<=500) 
-	{map.setCenter (vector_layer.getDataExtent().getCenterLonLat(),17);}  
-         }
-    }}
-    );
-END;
-}
+	$actionurl = '';
+	if ($action=='purge') {$actionurl="&action=purge";}
+	$vecfile='"'."//wiwosm.toolforge.org/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
 ?>
+	//OSM objects Layer : Object with the Wikipedia-Tag matching with article-name
+	var styleMap = new OpenLayers.StyleMap({'pointRadius': 7,
+						'strokeWidth': 3,
+						'strokeColor': '#ff0000',
+						'fillColor': '#ff0000',
+						'fillOpacity': .3
+	});
+
+	var vector_layer = new OpenLayers.Layer.Vector("OSM objects (loading...)",{
+					styleMap: styleMap,
+					attribution:' <a target="_blank" href="//wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (<a target="_blank" href="//opendatacommons.org/licenses/odbl/">ODbL</a>) '
+	
+										});
+	map.addLayer(vector_layer);
+
+	var JSONurl = <?=$vecfile?>;
+	var p = new OpenLayers.Format.GeoJSON();
+
+	OpenLayers.Request.GET({
+		url: JSONurl,
+		callback: function (response) {
+
+			if (response.status == 404) {
+				vector_layer.setVisibility(false);
+				vector_layer.setName("OSM objects (not found)");
+			} else {
+				var gformat = new OpenLayers.Format.GeoJSON();
+				gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
+					response.responseText + '}]}';
+				var feats = gformat.read(gg);
+
+				vector_layer.addFeatures(feats);
+				vector_layer.setName("OSM objects (WIWOSM)");
+				document.title = args.title + " on OpenStreetMap";
+
+				if (vector_layer.getDataExtent().getHeight() > 500) {
+					map.zoomToExtent(vector_layer.getDataExtent(), false);
+				}
+
+				if (!args.lon && vector_layer.getDataExtent().getHeight() <= 500) {
+					map.setCenter(vector_layer.getDataExtent().getCenterLonLat(), 17);
+				}
+			}
+		}
+	});
+<?php } ?>
+
   
 
 	var feature = null;
