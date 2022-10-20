@@ -315,7 +315,7 @@ function init()
 		extractAttributes: true
 			})
 	});
-	pois = new OpenLayers.Layer.Vector("Wikipedia World", {
+	pois = new OpenLayers.Layer.Vector(OpenLayers.i18n("Wikipedia World"), {
 		attribution:'<a target="_blank" href="//de.wikipedia.org/wiki/Wikipedia:WikiProjekt_Georeferenzierung/Wikipedia-World/en"><?php echo translate('wikipedia',$uselang);?></a> (CC-BY-SA)',
 		projection: new OpenLayers.Projection("EPSG:4326"),
 		strategies: [bboxStrategy],
@@ -338,7 +338,7 @@ if ($title and detect_not_ie()){
 						'fillOpacity': .3
 	});
 
-	var vector_layer = new OpenLayers.Layer.Vector("OSM objects (loading...)",{
+	var vector_layer = new OpenLayers.Layer.Vector(OpenLayers.i18n("OSM objects (loading...)"),{
 					styleMap: styleMap,
 					attribution:' <a target="_blank" href="//wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (<a target="_blank" href="//opendatacommons.org/licenses/odbl/">ODbL</a>) '
 	
@@ -354,7 +354,7 @@ if ($title and detect_not_ie()){
 
 			if (response.status == 404) {
 				vector_layer.setVisibility(false);
-				vector_layer.setName("OSM objects (not found)");
+				vector_layer.setName(OpenLayers.i18n("OSM objects (not found)"));
 			} else {
 				var gformat = new OpenLayers.Format.GeoJSON();
 				gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
@@ -362,7 +362,7 @@ if ($title and detect_not_ie()){
 				var feats = gformat.read(gg);
 
 				vector_layer.addFeatures(feats);
-				vector_layer.setName("OSM objects (WIWOSM)");
+				vector_layer.setName(OpenLayers.i18n("OSM objects (WIWOSM)"));
 				document.title = args.title + " on OpenStreetMap";
 
 				if (vector_layer.getDataExtent().getHeight() > 500) {
@@ -592,7 +592,7 @@ if ($title and detect_not_ie()){
 		// move to
 		map.setCenter(center, zoom);
 	}
-	var markers = new OpenLayers.Layer.Markers( "Marker", {
+	var markers = new OpenLayers.Layer.Markers( OpenLayers.i18n("Marker"), {
 		attribution:' <a target="_blank" href="//<?php echo $lang;?>.wikipedia.org/wiki/Help:OpenStreetMap"> <?php echo translate('help',$uselang);?> </a>'
 	} );
 	map.addLayer(markers);

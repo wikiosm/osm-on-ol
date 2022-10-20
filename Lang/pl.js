@@ -32,5 +32,11 @@ OpenLayers.Lang["pl"] = OpenLayers.Util.applyDefaults({
 	"Translated names map": 'Przetłumaczone nazwy',
 	"Local names map": 'Natywne nazwy',
 	"OSM.org map": 'Mapa OSM.org (szczegółowa)',
-	"Public transport map": 'Publiczny transport',
+	"Public transport map": 'Komunikacja zbiorowa',
+	// extra layers
+	'Wikipedia World': 'Wikipedia (artykuły)',
+	'OSM objects (loading...)': 'Kształt obiektu (ładowanie...)',
+	'OSM objects (not found)': 'Kształt obiektu (brak tytułu)',
+	'OSM objects (WIWOSM)': 'Kształt obiektu (WIWOSM)',
+	'Marker': 'Znacznik pozycji',
 });
