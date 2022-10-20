@@ -789,8 +789,19 @@ $(function () {
 			#mapInsetMenuDropdown label {
 			font-weight: bold;
 			}
-
-
+			#mapInsetMenuDropdown .languages label {
+			display: block;
+			padding: .5em 0;
+			}
+			#mapInsetMenuDropdown .languages {
+			padding-top: 0;
+			margin-top: 0;
+			margin-inline: .3em;
+			}
+			#mapInsetMenu-languages {
+			width: 100%;
+			box-sizing: border-box;
+			}
 		</style>
 
 	</head>
@@ -808,7 +819,7 @@ $(function () {
 			<?=translate('options',$uselang)?>
 		</div>
 		<div id="mapInsetMenuDropdown">
-			<p>
+			<p class="languages">
 				<label for="mapInsetMenu-languages"><?=translate('languages',$uselang)?></label>
 				<select id="mapInsetMenu-languages" size="5">
 					<option value="">ALL</option>
@@ -816,12 +827,12 @@ $(function () {
 					<option value="en">English</option>
 				</select>
 			</p>
-			<p>
-				<input  id="mapInsetMenu-thumbs" type="checkbox" value="thumbs" />
+			<p class="thumbs">
+				<input  id="mapInsetMenu-thumbs" type="radio" value="thumbs" />
 				<label for="mapInsetMenu-thumbs"><?=translate('thumbnails',$uselang)?></label>
 			</p>
-			<p>
-				<input  id="mapInsetMenu-coats" type="checkbox" value="coats" />
+			<p class="coats">
+				<input  id="mapInsetMenu-coats" type="radio" value="coats" />
 				<label for="mapInsetMenu-coats"><?=translate('coat-of-arms',$uselang)?></label>
 			</p>
 		</div>
