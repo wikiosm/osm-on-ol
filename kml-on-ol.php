@@ -126,7 +126,7 @@ var poiLayerHttp;
 var pois;
 var osmLabelsLang;
 var forcelocal;
-		        
+
 <?php echo "var lang = '$lang';";?>
 if(lang=="hsb"||lang=="ru") {forcelocal=false;} else {forcelocal=false;}
 
@@ -256,14 +256,18 @@ function init()
 	osm.setVisibility(true);
 	map.addLayer(osm);
 	var osmNoLabels = new OpenLayers.Layer.OSM.Toolserver('osm-no-labels',{
-		attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
-		visibility: false,
-		tileOptions: { crossOriginKeyword: null }
-	} ,
-	{isBaseLayer:true                  });
+			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
+			visibility: false,
+			tileOptions: { crossOriginKeyword: null }
+		} ,
+		{isBaseLayer:true}
+	);
+	// un-maintained, doesn't work
+	/**
 	osmNoLabels.setIsBaseLayer(true);
 	osmNoLabels.setVisibility(false);
 	map.addLayer(osmNoLabels);
+	/**/
 
 	//Place for OSM.org
 	map.addLayer(new OpenLayers.Layer.OSM("OSM.org",
@@ -289,7 +293,8 @@ function init()
 	
 
 	osmLabelsLang = new OpenLayers.Layer.OSM('osm-labels-<?php echo $lang;?>',"//tiles.wmflabs.org/osm-multilingual/<?php echo $lang;?>,_/${z}/${x}/${y}.png", {isBaseLayer: false, visibility: false, tileOptions: { crossOriginKeyword: null }, attribution:''});
-	map.addLayers([osmLabelsLang]);
+	// unmainted, doesn't work
+	// map.addLayers([osmLabelsLang]);
 
 
 	// Wikipedia-World Layer			
@@ -498,6 +503,7 @@ END;
 			$(".olControlScaleLine").css('display', 'block');
 		}
 		
+		/**
 		// below zoom 6 we switch from layer "osm" to layer "osm-no-labels" + "osm-labels-de"
 		if((map.getZoom() <= 6 || forcelocal) && map.baseLayer.id == osm.id)
 		{
@@ -527,7 +533,7 @@ END;
 			{osmLabelsLang.setVisibility(false);}
 		if (!(map.baseLayer.name=='Satellite' || map.baseLayer.id == osmNoLabels.id))
 			{osmLabelsLang.setVisibility(false);}
-	
+		/**/
 	}
 	
 
@@ -645,6 +651,7 @@ $.ajax({
 			$('.menuSelectlist').change(function () {
 
 				poiLayerHttp.params.LANG = $(this).val();
+				/**
 				if ($(this).val() != '') {
 					osmLabelsLang.name = "osm-labels-" + $(this).val();
 					osmLabelsLang.url = [
@@ -654,6 +661,7 @@ $.ajax({
 					];
 					osmLabelsLang.redraw(true);
 				}
+				/**/
 				pois.redraw(true);
 			});
 		});
