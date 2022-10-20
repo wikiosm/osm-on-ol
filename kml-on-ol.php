@@ -209,49 +209,58 @@ function init()
 		CLASS_NAME: "OpenLayers.Layer.OSM.Toolserver"
 	});
 
-	map.addLayer(new OpenLayers.Layer.OSM("International",
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Translated names"),
 		"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png?lang=<?php echo $lang;?>",
-			{attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>', type: 'png', serviceVersion:'',layername:'',
-		visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
+		{
+			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
+			type: 'png', serviceVersion:'',layername:'',
+			visibility: false,
+			tileOptions: { crossOriginKeyword: null },
+			transitionEffect: 'resize' 
+		}
+	));
 
 
 
 	var urlRegex = new RegExp('^//([abc]).toolserver.org/tiles/([^/]+)/(.*)$');
 
-	var osm = new OpenLayers.Layer.OSM('osm', "//maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",{
-		attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
-		transitionEffect: 'resize',
-		tileOptions: {
-			'eventListeners': {
-				'loaderror': function(evt) {
-						
-					if(urlRegex.test(this.url))
-					{
-						var style = RegExp.$2;
-						if(style == 'osm'||style == 'osm-no-labels')
+	var osm = new OpenLayers.Layer.OSM(OpenLayers.i18n("Local names"),
+		"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",
+		{
+			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
+			transitionEffect: 'resize',
+			tileOptions: {
+				'eventListeners': {
+					'loaderror': function(evt) {
+							
+						if(urlRegex.test(this.url))
 						{
-							var tile = RegExp.$3;
-							var inst = RegExp.$1;
-							this.setImgSrc('//'+inst+'.tile.openstreetmap.org/'+tile);
-				
-							if(window.console && console.log)
-								console.log('redirecting request for '+tile+' to openstreetmap.org: '+this.url);
-								// alert ('test:URL' + this.url + '  //'+inst+'.tile.openstreetmap.org/'+tile );
-							return;
-						}
-						if(style == 'osm-labels-ru')
-						{
-							this.setImgSrc('//toolserver.org/~osm/libs/openlayers/latest/img/blank.gif');
-							return;
-						}
+							var style = RegExp.$2;
+							if(style == 'osm'||style == 'osm-no-labels')
+							{
+								var tile = RegExp.$3;
+								var inst = RegExp.$1;
+								this.setImgSrc('//'+inst+'.tile.openstreetmap.org/'+tile);
+					
+								if(window.console && console.log)
+									console.log('redirecting request for '+tile+' to openstreetmap.org: '+this.url);
+									// alert ('test:URL' + this.url + '  //'+inst+'.tile.openstreetmap.org/'+tile );
+								return;
+							}
+							if(style == 'osm-labels-ru')
+							{
+								this.setImgSrc('//toolserver.org/~osm/libs/openlayers/latest/img/blank.gif');
+								return;
+							}
 
-						this.setImgSrc('//www.openstreetmap.org/openlayers/img/404.png');
+							this.setImgSrc('//www.openstreetmap.org/openlayers/img/404.png');
+						}
 					}
-				}
-			},
-			crossOriginKeyword: null
+				},
+				crossOriginKeyword: null
+			}
 		}
-	})
+	)
 	osm.setIsBaseLayer(true);
 	osm.setVisibility(true);
 	map.addLayer(osm);
@@ -270,18 +279,12 @@ function init()
 	/**/
 
 	//Place for OSM.org
-	map.addLayer(new OpenLayers.Layer.OSM("OSM.org",
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("OSM.org"),
 		"//a.tile.openstreetmap.org/${z}/${x}/${y}.png",
 		{attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
 
 
-	map.addLayer(new OpenLayers.Layer.OSM("maps.wikimedia",
-		"//maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",
-		{attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
-		visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-
-									
-	map.addLayer(new OpenLayers.Layer.OSM("Public Transport (&Ouml;PNV)",
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Public transport"),
 		"http://tile.memomaps.de/tilegen/${z}/${x}/${y}.png",  {attribution:'Map © OpenStreetMap contributors',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
 
 	//map.addLayer(new OpenLayers.Layer.OSM("hires",
