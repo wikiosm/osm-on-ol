@@ -18,7 +18,7 @@
  */
 OpenLayers.Lang["pl"] = OpenLayers.Util.applyDefaults({
 
-    'Permalink': "Link bezpośredni",
+    'Permalink': "Permalink",
 
     'Overlays': "Warstwy dodatkowe",
 
