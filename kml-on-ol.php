@@ -623,7 +623,7 @@ $.ajax({
 	data: "lang=<?=$uselang?>",
 	success: function (html) {
 		$('#mapInsetMenu-languages').empty();
-		$(msg).appendTo('#mapInsetMenu-languages');
+		$(html).appendTo('#mapInsetMenu-languages');
 	}
 });
 // image-markers interactions
