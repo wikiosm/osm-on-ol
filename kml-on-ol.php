@@ -828,11 +828,11 @@ $(function () {
 				</select>
 			</p>
 			<p class="thumbs">
-				<input  id="mapInsetMenu-thumbs" type="radio" value="thumbs" />
+				<input  id="mapInsetMenu-thumbs" type="checkbox" value="thumbs" />
 				<label for="mapInsetMenu-thumbs"><?=translate('thumbnails',$uselang)?></label>
 			</p>
 			<p class="coats">
-				<input  id="mapInsetMenu-coats" type="radio" value="coats" />
+				<input  id="mapInsetMenu-coats" type="checkbox" value="coats" />
 				<label for="mapInsetMenu-coats"><?=translate('coat-of-arms',$uselang)?></label>
 			</p>
 		</div>
