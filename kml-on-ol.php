@@ -355,6 +355,7 @@ if ($title and detect_not_ie()){
 			if (response.status == 404) {
 				vector_layer.setVisibility(false);
 				vector_layer.setName(OpenLayers.i18n("OSM objects (not found)"));
+				map.removeLayer(vector_layer);
 			} else {
 				var gformat = new OpenLayers.Format.GeoJSON();
 				gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
