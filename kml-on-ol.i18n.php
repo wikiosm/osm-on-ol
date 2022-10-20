@@ -621,6 +621,7 @@ $messages['pl'] = array(
 	'ts-kml-on-ol-options' => 'Opcje',
 	'ts-kml-on-ol-languages' => 'Języki',
 	'ts-kml-on-ol-thumbnails' => 'Miniatury',
+    'ts-kml-on-ol-coat-of-arms' => 'Herby',
 	'ts-kml-on-ol-help' => 'Pomoc',
 	'ts-kml-on-ol-all' => 'Wszystko',
 	'ts-kml-on-ol-map-by' => 'Mapa',
