@@ -209,7 +209,7 @@ function init()
 		CLASS_NAME: "OpenLayers.Layer.OSM.Toolserver"
 	});
 
-	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Translated names"),
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Translated names map"),
 		"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png?lang=<?php echo $lang;?>",
 		{
 			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
@@ -224,7 +224,7 @@ function init()
 
 	var urlRegex = new RegExp('^//([abc]).toolserver.org/tiles/([^/]+)/(.*)$');
 
-	var osm = new OpenLayers.Layer.OSM(OpenLayers.i18n("Local names"),
+	var osm = new OpenLayers.Layer.OSM(OpenLayers.i18n("Local names map"),
 		"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",
 		{
 			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
@@ -279,12 +279,12 @@ function init()
 	/**/
 
 	//Place for OSM.org
-	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("OSM.org"),
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("OSM.org map"),
 		"//a.tile.openstreetmap.org/${z}/${x}/${y}.png",
 		{attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
 
 
-	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Public transport"),
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Public transport map"),
 		"http://tile.memomaps.de/tilegen/${z}/${x}/${y}.png",  {attribution:'Map © OpenStreetMap contributors',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
 
 	//map.addLayer(new OpenLayers.Layer.OSM("hires",
