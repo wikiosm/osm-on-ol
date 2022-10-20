@@ -1,4 +1,8 @@
 <?php
+/**
+ * Options to select image sources.
+ */
+
 require_once ( "helpers.php" ) ;
 
 $uselang=addslashes(urldecode(param_get('lang', 'en')));
@@ -32,28 +36,12 @@ $alllangs_red=array("wikidata","ace","af","als","am","an","ang","ar","arc","arz"
 
 
 include "./cldr/LanguageNames".$langCapital.".php";?>
-<b>
-<?php echo translate('languages',$uselang);?>
-</b><br />
+
 <?php
-echo '<select class="menuSelectlist" name="top5" size="5"> 
+echo '
 <option value=""> '.translate('all',$uselang).'  </option>';
 foreach ($alllangs_red as $key => $la) {
-if ($la==$uselang) {$select=" selected ";} else  {$select="";}
+	if ($la==$uselang) {$select=" selected ";} else  {$select="";}
 	$name = empty($names[$la]) ? $la : $names[$la]."\t(".$la.")";
 	echo "<option $select value='$la'>$name</option>\n";
 }
-echo '</select>';
-?>
-
-<p />
-
-<input class="menuSelect" type="checkbox" name="thumbs" value="thumbs"/>            
-<b><?php echo translate('thumbnails',$uselang);?></b>
-
-<br>
-<input class="menuSelect2" type="checkbox" name="coats" value="coats"/>
-<b><?php echo translate('coat-of-arms',$uselang);?></b>
-</select>
-
- 

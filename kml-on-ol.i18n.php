@@ -618,7 +618,7 @@ $messages['pdc'] = array(
  * @author Sp5uhe
  */
 $messages['pl'] = array(
-	'ts-kml-on-ol-options' => 'Opcje',
+	'ts-kml-on-ol-options' => 'Opcje obrazków',
 	'ts-kml-on-ol-languages' => 'Języki',
 	'ts-kml-on-ol-thumbnails' => 'Miniatury',
     'ts-kml-on-ol-coat-of-arms' => 'Herby',

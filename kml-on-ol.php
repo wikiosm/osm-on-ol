@@ -606,71 +606,69 @@ if ($title and detect_not_ie()){
 } // init()
 
 
-
+//
+// Thumbnails and coats markers (large images)
+//
+// show/hide image-markers options
 function hideInsetMenu() {
 	$('#mapInsetMenuDropdown').css('visibility', 'hidden');
 }
 function showInsetMenu() {
 	$('#mapInsetMenuDropdown').css('visibility', 'visible');
 }
-
-        
+// load image-markers wikipedias list
 $.ajax({
 	type: "GET",
 	url: "lang-select.php",
-	data: "lang=<?php echo $uselang;?>",
-	success: function (msg) {
-		$('#mapInsetMenuDropdown').empty();
-		$(msg).appendTo('#mapInsetMenuDropdown');
-		$(function () {
-			$('.menuSelect').change(function () {
-				if ($(this).attr('checked') == true) {
-					poiLayerHttp.params[$(this).val()] = 'yes';
-					$('.menuSelect2').removeAttr('checked');
-					poiLayerHttp.params[$('.menuSelect2').val()] = 'no';
-				} else {
-					poiLayerHttp.params[$(this).val()] = 'no';
-				}
-				pois.redraw(true);
-			});
-		});
-
-		$(function () {
-			$('.menuSelect2').change(function () {
-				if ($(this).attr('checked') == true) {
-					poiLayerHttp.params[$(this).val()] = 'yes';
-					$('.menuSelect').removeAttr('checked');
-					poiLayerHttp.params[$('.menuSelect').val()] = 'no';
-
-				} else {
-					poiLayerHttp.params[$(this).val()] = 'no';
-				}
-				pois.redraw(true);
-			});
-		});
-
-		$(function () {
-			$('.menuSelectlist').change(function () {
-
-				poiLayerHttp.params.LANG = $(this).val();
-				/**
-				if ($(this).val() != '') {
-					osmLabelsLang.name = "osm-labels-" + $(this).val();
-					osmLabelsLang.url = [
-						"//a.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png",
-						"//b.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png",
-						"//c.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png"
-					];
-					osmLabelsLang.redraw(true);
-				}
-				/**/
-				pois.redraw(true);
-			});
-		});
+	data: "lang=<?=$uselang?>",
+	success: function (html) {
+		$('#mapInsetMenu-languages').empty();
+		$(msg).appendTo('#mapInsetMenu-languages');
 	}
 });
+// image-markers interactions
+$(function () {
+	$('#mapInsetMenu-thumbs').change(function () {
+		if ($(this).attr('checked') == true) {
+			poiLayerHttp.params[$(this).val()] = 'yes';
+			$('#mapInsetMenu-coats').removeAttr('checked');
+			poiLayerHttp.params[$('#mapInsetMenu-coats').val()] = 'no';
+		} else {
+			poiLayerHttp.params[$(this).val()] = 'no';
+		}
+		pois.redraw(true);
+	});
 
-		</script>
+	$('#mapInsetMenu-coats').change(function () {
+		if ($(this).attr('checked') == true) {
+			poiLayerHttp.params[$(this).val()] = 'yes';
+			$('#mapInsetMenu-thumbs').removeAttr('checked');
+			poiLayerHttp.params[$('#mapInsetMenu-thumbs').val()] = 'no';
+
+		} else {
+			poiLayerHttp.params[$(this).val()] = 'no';
+		}
+		pois.redraw(true);
+	});
+
+	$('#mapInsetMenu-languages').change(function () {
+
+		poiLayerHttp.params.LANG = $(this).val();
+		/**
+		if ($(this).val() != '') {
+			osmLabelsLang.name = "osm-labels-" + $(this).val();
+			osmLabelsLang.url = [
+				"//a.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png",
+				"//b.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png",
+				"//c.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png"
+			];
+			osmLabelsLang.redraw(true);
+		}
+		/**/
+		pois.redraw(true);
+	});
+});
+</script>
 
 <style type="text/css">
 			body {
@@ -788,6 +786,9 @@ $.ajax({
 			box-shadow: 2px 2px 2px #666;
 			-moz-box-shadow: 2px 2px 2px #666;
 			}
+			#mapInsetMenuDropdown label {
+			font-weight: bold;
+			}
 
 
 		</style>
@@ -796,37 +797,37 @@ $.ajax({
 	 
 	<body onload="init();">
 
-<div id="mapContainer"  style="width: 100%; height: 100%">   
-    <div style="width: 100%; height: 100%" id="map">
+<div id="mapContainer" style="width: 100%; height: 100%">
+	<div style="width: 100%; height: 100%" id="map">
 
-    </div>
-    
-    <div id="mapInsetMenu" class="mapBtnOuter" onmouseout="javascript:hideInsetMenu()" onmouseover="javascript:showInsetMenu()">
-        <div id="mapInsetMenuI" class="mapBtnInner">
-            <?php echo translate('options',$uselang);?>
-        </div>
-        <div id="mapInsetMenuDropdown">        
-             
-		
-		<p>
-		<b><?php echo translate('thumbnails',$uselang);?></b><br />
-		<input class="menuSelect" type="checkbox" name="thumbs" value="thumbs"/>
-		<p>
-		<b><?php echo "Coats".translate('coat-of-arms',$uselang);?></b><br />
-		<input class="menuSelect2" type="checkbox" name="CoA" value="thumbs"/>
-             <br>
-<b>
-<?php echo translate('languages',$uselang);?>
-</b><br />
-<select class="menuSelectlist" name="top5" size="5"> 
-<option value=""> ALL  </option>
-<option value="de">Deutsch</option>
-<option value="en">English</option>
-</select>
-        </div>
+	</div>
 
-    </div>
-     
+	<div id="mapInsetMenu" class="mapBtnOuter" onmouseout="hideInsetMenu()"
+		onmouseover="showInsetMenu()">
+		<div id="mapInsetMenuI" class="mapBtnInner">
+			<?=translate('options',$uselang)?>
+		</div>
+		<div id="mapInsetMenuDropdown">
+			<p>
+				<label for="mapInsetMenu-languages"><?=translate('languages',$uselang)?></label>
+				<select id="mapInsetMenu-languages" size="5">
+					<option value="">ALL</option>
+					<option value="de">Deutsch</option>
+					<option value="en">English</option>
+				</select>
+			</p>
+			<p>
+				<input  id="mapInsetMenu-thumbs" type="checkbox" value="thumbs" />
+				<label for="mapInsetMenu-thumbs"><?=translate('thumbnails',$uselang)?></label>
+			</p>
+			<p>
+				<input  id="mapInsetMenu-coats" type="checkbox" value="coats" />
+				<label for="mapInsetMenu-coats"><?=translate('coat-of-arms',$uselang)?></label>
+			</p>
+		</div>
+
+	</div>
+
 </div>
 
 	</body>
