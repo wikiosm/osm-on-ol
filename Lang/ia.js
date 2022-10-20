@@ -22,9 +22,9 @@ OpenLayers.Lang["ia"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permaligamine",
 
-    'overlays': "Superpositiones",
+    'Overlays': "Superpositiones",
 
-    'baseLayer': "Strato de base",
+    'Base Layer': "Strato de base",
 
     'sameProjection': "Le mini-carta functiona solmente si illo es in le mesme projection que le carta principal",
 

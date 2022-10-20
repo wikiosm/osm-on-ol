@@ -18,9 +18,9 @@ OpenLayers.Lang.en = {
 
     'permalink': "Permalink",
 
-    'overlays': "Overlays",
+    'Overlays': "Overlays",
 
-    'baseLayer': "Base Layer",
+    'Base Layer': "Base Layer",
 
     'sameProjection':
         "The overview map only works when it is in the same projection as the main map",

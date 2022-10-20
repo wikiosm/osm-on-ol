@@ -21,7 +21,7 @@ OpenLayers.Lang["ar"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "وصلة دائمة",
 
-    'baseLayer': "الطبقة الاساسية",
+    'Base Layer': "الطبقة الاساسية",
 
     'readNotImplemented': "القراءة غير محققة.",
 

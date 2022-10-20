@@ -20,9 +20,9 @@ OpenLayers.Lang["is"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Varanlegur tengill",
 
-    'overlays': "Þekjur",
+    'Overlays': "Þekjur",
 
-    'baseLayer': "Grunnlag",
+    'Base Layer': "Grunnlag",
 
     'sameProjection': "Yfirlitskortið virkar aðeins ef það er í sömu vörpun og aðalkortið",
 

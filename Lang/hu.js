@@ -23,9 +23,9 @@ OpenLayers.Lang["hu"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permalink",
 
-    'overlays': "Rávetítések",
+    'Overlays': "Rávetítések",
 
-    'baseLayer': "Alapréteg",
+    'Base Layer': "Alapréteg",
 
     'sameProjection': "Az áttekintő térkép csak abban az esetben működik, ha ugyanazon a vetületen van, mint a fő térkép.",
 

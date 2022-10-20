@@ -18,9 +18,9 @@ OpenLayers.Lang.ca = {
 
     'permalink': "Enllaç permanent",
 
-    'overlays': "Capes addicionals",
+    'Overlays': "Capes addicionals",
 
-    'baseLayer': "Capa Base",
+    'Base Layer': "Capa Base",
 
     'sameProjection':
         "El mapa de referència només funciona si té la mateixa projecció que el mapa principal",

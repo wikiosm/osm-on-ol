@@ -22,9 +22,9 @@ OpenLayers.Lang["nl"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permanente verwijzing",
 
-    'overlays': "Overlays",
+    'Overlays': "Overlays",
 
-    'baseLayer': "Achtergrondkaart",
+    'Base Layer': "Achtergrondkaart",
 
     'sameProjection': "De overzichtskaart werkt alleen als de projectie gelijk is aan de projectie van de hoofdkaart",
 

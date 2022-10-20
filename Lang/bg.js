@@ -20,7 +20,7 @@ OpenLayers.Lang["bg"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Постоянна препратка",
 
-    'baseLayer': "Основен слой",
+    'Base Layer': "Основен слой",
 
     'errorLoadingGML': "Грешка при зареждане на GML файл ${url}",
 

@@ -23,9 +23,9 @@ OpenLayers.Lang["be-tarask"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Сталая спасылка",
 
-    'overlays': "Слаі",
+    'Overlays': "Слаі",
 
-    'baseLayer': "Базавы слой",
+    'Base Layer': "Базавы слой",
 
     'sameProjection': "Аглядная мапа працуе толькі калі яна мае тую ж праекцыю, што і асноўная мапа",
 

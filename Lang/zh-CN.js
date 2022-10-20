@@ -18,9 +18,9 @@ OpenLayers.Lang["zh-CN"] = {
 
     'permalink': "永久链接",
 
-    'overlays': "叠加层",
+    'Overlays': "叠加层",
 
-    'baseLayer': "基础图层",
+    'Base Layer': "基础图层",
 
     'sameProjection':
         "鹰眼地图只有在和主地图使用相同的投影的时候才能正常共工作",

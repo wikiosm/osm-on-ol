@@ -18,9 +18,9 @@ OpenLayers.Lang.it = {
 
     'permalink': "Permalink",
 
-    'overlays': "Overlays",
+    'Overlays': "Overlays",
 
-    'baseLayer': "Livello base",
+    'Base Layer': "Livello base",
 
     'sameProjection':
         "La mini mappa funziona solamente se ha la stessa proiezione della mappa principale",

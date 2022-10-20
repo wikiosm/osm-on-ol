@@ -22,9 +22,9 @@ OpenLayers.Lang["oc"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permaligam",
 
-    'overlays': "Calques",
+    'Overlays': "Calques",
 
-    'baseLayer': "Calc de basa",
+    'Base Layer': "Calc de basa",
 
     'sameProjection': "La carta de situacion fonciona pas que quora sa projeccion es la meteissa que la de la carta principala",
 

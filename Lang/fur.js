@@ -20,9 +20,9 @@ OpenLayers.Lang["fur"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Leam Permanent",
 
-    'overlays': "Livei parsore",
+    'Overlays': "Livei parsore",
 
-    'baseLayer': "Livel di base",
+    'Base Layer': "Livel di base",
 
     'browserNotSupported': "Il to sgarfadôr nol supuarte la renderizazion vetoriâl. Al moment a son supuartâts:\n${renderers}",
 

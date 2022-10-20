@@ -23,9 +23,9 @@ OpenLayers.Lang["id"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Pranala permanen",
 
-    'overlays': "Hamparan",
+    'Overlays': "Hamparan",
 
-    'baseLayer': "Lapisan Dasar",
+    'Base Layer': "Lapisan Dasar",
 
     'sameProjection': "Peta tinjauan hanya bekerja bila dalam proyeksi yang sama dengan peta utama",
 

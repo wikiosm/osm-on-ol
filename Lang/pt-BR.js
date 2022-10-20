@@ -23,9 +23,9 @@ OpenLayers.Lang["pt-br"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Link para essa página",
 
-    'overlays': "Camadas de Sobreposição",
+    'Overlays': "Camadas de Sobreposição",
 
-    'baseLayer': "Camada Base",
+    'Base Layer': "Camada Base",
 
     'sameProjection': "O mapa de referência só funciona quando ele está na mesma projeção do mapa principal",
 

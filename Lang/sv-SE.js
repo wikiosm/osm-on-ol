@@ -22,9 +22,9 @@ OpenLayers.Lang["sv"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permalänk",
 
-    'overlays': "Kartlager",
+    'Overlays': "Kartlager",
 
-    'baseLayer': "Bakgrundskarta",
+    'Base Layer': "Bakgrundskarta",
 
     'sameProjection': "Översiktskartan fungerar endast när den har samma projektion som huvudkartan",
 

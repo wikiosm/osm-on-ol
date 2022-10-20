@@ -18,9 +18,9 @@ OpenLayers.Lang.es = {
 
     'permalink': "Enlace permanente",
 
-    'overlays': "Capas superpuestas",
+    'Overlays': "Capas superpuestas",
 
-    'baseLayer': "Capa Base",
+    'Base Layer': "Capa Base",
 
     'sameProjection':
         "El mini mapa sólo funciona si está en la misma proyección que el mapa principal",

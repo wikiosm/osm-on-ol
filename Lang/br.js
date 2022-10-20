@@ -22,9 +22,9 @@ OpenLayers.Lang["br"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Peurliamm",
 
-    'overlays': "Gwiskadoù",
+    'Overlays': "Gwiskadoù",
 
-    'baseLayer': "Gwiskad diazez",
+    'Base Layer': "Gwiskad diazez",
 
     'sameProjection': "Ne\'z ar gartenn lec\'hiañ en-dro nemet pa vez heñvel ar banndres anezhi ha hini ar gartenn bennañ",
 

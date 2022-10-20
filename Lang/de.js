@@ -24,9 +24,9 @@ OpenLayers.Lang["de"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permalink",
 
-    'overlays': "Overlays",
+    'Overlays': "Overlays",
 
-    'baseLayer': "Grundkarte",
+    'Base Layer': "Grundkarte",
 
     'sameProjection': "Die Übersichtskarte funktioniert nur, wenn sie dieselbe Projektion wie die Hauptkarte verwendet",
 

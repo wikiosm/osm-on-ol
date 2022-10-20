@@ -22,9 +22,9 @@ OpenLayers.Lang["hr"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permalink",
 
-    'overlays': "Overlays",
+    'Overlays': "Overlays",
 
-    'baseLayer': "Osnovna karta",
+    'Base Layer': "Osnovna karta",
 
     'sameProjection': "Pregledna karta radi jedino kao je u istoj projekciji kao i glava karta",
 

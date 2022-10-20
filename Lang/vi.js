@@ -22,9 +22,9 @@ OpenLayers.Lang["vi"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Liên kết thường trực",
 
-    'overlays': "Lấp bản đồ",
+    'Overlays': "Lấp bản đồ",
 
-    'baseLayer': "Lớp nền",
+    'Base Layer': "Lớp nền",
 
     'sameProjection': "Bản đồ toàn cảnh chỉ hoạt động khi cùng phép chiếu với bản đồ chính",
 

@@ -22,9 +22,9 @@ OpenLayers.Lang["ksh"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Lengk op Duuer",
 
-    'overlays': "Drövver jelaat",
+    'Overlays': "Drövver jelaat",
 
-    'baseLayer': "Jrund-Nivoh",
+    'Base Layer': "Jrund-Nivoh",
 
     'sameProjection': "De Övverseeschs_Kaat deiht et bloß, wann se de sälve Projäxjuhn bruche deiht, wi de Houp_Kaat",
 

@@ -22,9 +22,9 @@ OpenLayers.Lang["sk"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Trvalý odkaz",
 
-    'overlays': "Prekrytia",
+    'Overlays': "Prekrytia",
 
-    'baseLayer': "Základná vrstva",
+    'Base Layer': "Základná vrstva",
 
     'sameProjection': "Prehľadová mapka funguje iba vtedy, keď je v rovnakej projekcii ako hlavná mapa",
 

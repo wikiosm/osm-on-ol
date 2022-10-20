@@ -18,9 +18,9 @@ OpenLayers.Lang["nb"] = {
 
     'permalink': "Kobling til denne siden",
 
-    'overlays': "Kartlag",
+    'Overlays': "Kartlag",
 
-    'baseLayer': "Bakgrunnskart",
+    'Base Layer': "Bakgrunnskart",
 
     'sameProjection':
         "Oversiktskartet fungerer bare når det har samme projeksjon som hovedkartet",

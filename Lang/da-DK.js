@@ -18,9 +18,9 @@ OpenLayers.Lang['da-DK'] = {
 
     'permalink': "Permalink",
 
-    'overlays': "Kortlag",
+    'Overlays': "Kortlag",
 
-    'baseLayer': "Baggrundslag",
+    'Base Layer': "Baggrundslag",
 
     'sameProjection':
         "Oversigtskortet fungerer kun når det har samme projektion som hovedkortet",

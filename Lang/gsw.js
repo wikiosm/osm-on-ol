@@ -22,9 +22,9 @@ OpenLayers.Lang["gsw"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permalink",
 
-    'overlays': "Iberlagerige",
+    'Overlays': "Iberlagerige",
 
-    'baseLayer': "Grundcharte",
+    'Base Layer': "Grundcharte",
 
     'sameProjection': "D Ibersichts-Charte funktioniert nume, wänn si di glych Projäktion brucht wie d Hauptcharte",
 

@@ -24,9 +24,9 @@ OpenLayers.Lang["pt"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Ligação permanente",
 
-    'overlays': "Sobreposições",
+    'Overlays': "Sobreposições",
 
-    'baseLayer': "Camada Base",
+    'Base Layer': "Camada Base",
 
     'sameProjection': "O mapa panorâmico só funciona quando está na mesma projeção que o mapa principal",
 

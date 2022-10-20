@@ -22,9 +22,9 @@ OpenLayers.Lang["gl"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Ligazón permanente",
 
-    'overlays': "Capas superpostas",
+    'Overlays': "Capas superpostas",
 
-    'baseLayer': "Capa base",
+    'Base Layer': "Capa base",
 
     'sameProjection': "A vista xeral do mapa só funciona cando está na mesma proxección có mapa principal",
 

@@ -19,9 +19,9 @@ OpenLayers.Lang["zh-TW"] = {
 
     'permalink': "永久連結",
 
-    'overlays': "額外圖層",
+    'Overlays': "額外圖層",
 
-    'baseLayer': "基礎圖層",
+    'Base Layer': "基礎圖層",
 
     'sameProjection':
         "地圖縮覽(OverviewMap)只能在跟主地圖相同投影時起作用。",

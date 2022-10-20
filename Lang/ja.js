@@ -23,9 +23,9 @@ OpenLayers.Lang["ja"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "パーマリンク",
 
-    'overlays': "オーバーレイ",
+    'Overlays': "オーバーレイ",
 
-    'baseLayer': "基底レイヤー",
+    'Base Layer': "基底レイヤー",
 
     'sameProjection': "概観地図はメインの地図と同じ投影法をとる場合のみ機能します",
 

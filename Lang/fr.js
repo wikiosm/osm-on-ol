@@ -23,9 +23,9 @@ OpenLayers.Lang["fr"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permalien",
 
-    'overlays': "Calques",
+    'Overlays': "Calques",
 
-    'baseLayer': "Calque de base",
+    'Base Layer': "Calque de base",
 
     'sameProjection': "La carte de situation ne fonctionne que lorsque sa projection est la même que celle de la carte principale",
 

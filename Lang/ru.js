@@ -25,9 +25,9 @@ OpenLayers.Lang["ru"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Постоянная ссылка",
 
-    'overlays': "Слои",
+    'Overlays': "Слои",
 
-    'baseLayer': "Основной слой",
+    'Base Layer': "Основной слой",
 
     'sameProjection': "Обзорная карта работает только тогда, когда имеет ту же проекцию, что и основная",
 

@@ -22,9 +22,9 @@ OpenLayers.Lang["nds"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Permalink",
 
-    'overlays': "Overlays",
+    'Overlays': "Overlays",
 
-    'baseLayer': "Achtergrundkoort",
+    'Base Layer': "Achtergrundkoort",
 
     'sameProjection': "De Översichtskoort geiht blot, wenn de sülve Projekschoon as bi de Hööftkoort bruukt warrt",
 

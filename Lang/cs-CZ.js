@@ -22,9 +22,9 @@ OpenLayers.Lang["cs-CZ"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Trvalý odkaz",
 
-    'overlays': "Překryvné vrstvy",
+    'Overlays': "Překryvné vrstvy",
 
-    'baseLayer': "Podkladové vrstvy",
+    'Base Layer': "Podkladové vrstvy",
 
     'sameProjection': "Přehledka pracuje správně pouze tehdy, pokud je ve stejné projekci jako hlavní mapa",
 

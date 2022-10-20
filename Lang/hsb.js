@@ -22,9 +22,9 @@ OpenLayers.Lang["hsb"] = OpenLayers.Util.applyDefaults({
 
     'permalink': "Trajny wotkaz",
 
-    'overlays': "Naworštowanja",
+    'Overlays': "Naworštowanja",
 
-    'baseLayer': "Zakładna runina",
+    'Base Layer': "Zakładna runina",
 
     'sameProjection': "Přehladowa karta jenož funguje, hdyž je w samsnej projekciji kaž hłowna karta",
 
