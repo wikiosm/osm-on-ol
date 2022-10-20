@@ -18,14 +18,12 @@
  */
 OpenLayers.Lang["pl"] = OpenLayers.Util.applyDefaults({
 
-    'unhandledRequest': "Nieudane żądanie zwróciło: ${statusText}",
+    'Permalink': "Link bezpośredni",
 
-    'permalink': "Link bezpośredni",
+    'Overlays': "Warstwy dodatkowe",
 
-    'overlays': "Warstwy dodatkowe",
+    'Base Layer': "Warstwa bazowa",
 
-    'baseLayer': "Warstwa bazowa",
-
-    'scale': "Skala = 1 : ${scaleDenom}",
+    'Scale = 1 : ${scaleDenom}': "Skala = 1 : ${scaleDenom}",
     
 });
