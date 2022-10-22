@@ -67,28 +67,28 @@ if (strpos($type,"(")>0) {$type = substr($type,0,strpos($type,"("));}
 if (strpos($type,"_")>0) {$type = substr($type,0,strpos($type,"_"));}
 
 $default_scale = array(
-					'country'   =>  10000000, # 10 mill
-					'satellite' =>  10000000, # 10 mill
-					'state'     =>   3000000, # 3 mill
-					'adm1st'    =>   1000000, # 1 mill
-					'adm2nd'    =>    300000, # 300 thousand
-					'adm3rd'    =>    100000, # 100 thousand
-					'city'      =>    100000, # 100 thousand
-					'isle'      =>    100000, # 100 thousand
-					'mountain'  =>    100000, # 100 thousand
-					'river'     =>    100000, # 100 thousand
-					'waterbody' =>    100000, # 100 thousand
-					'event'     =>     50000, # 50 thousand
-					'forest'    =>     50000, # 50 thousand
-					'glacier'   =>     50000, # 50 thousand
-					'town'      =>     50000, # 50 thousand
-					'airport'   =>     30000, # 30 thousand
-					'railwaystation' =>     10000, # 10 thousand
-					'edu'       =>     10000, # 10 thousand
-					'pass'      =>     10000, # 10 thousand
-					'landmark'  =>     10000,  # 10 thousand
-					'building'  =>     1500,
-				);
+	'country'        => 10000000, # 10 mill
+	'satellite'      => 10000000, # 10 mill
+	'state'          =>  3000000, # 3 mill
+	'adm1st'         =>  1000000, # 1 mill
+	'adm2nd'         =>   300000, # 300 thousand
+	'adm3rd'         =>   100000, # 100 thousand
+	'city'           =>   100000, # 100 thousand
+	'isle'           =>   100000, # 100 thousand
+	'mountain'       =>   100000, # 100 thousand
+	'river'          =>   100000, # 100 thousand
+	'waterbody'      =>   100000, # 100 thousand
+	'event'          =>    50000, # 50 thousand
+	'forest'         =>    50000, # 50 thousand
+	'glacier'        =>    50000, # 50 thousand
+	'town'           =>    50000, # 50 thousand
+	'airport'        =>    30000, # 30 thousand
+	'railwaystation' =>    10000, # 10 thousand
+	'edu'            =>    10000, # 10 thousand
+	'pass'           =>    10000, # 10 thousand
+	'landmark'       =>    10000, # 10 thousand
+	'building'       =>     3000,
+);
 if (!isset($default_scale[$type])) {
 	$type = 'city';
 }
