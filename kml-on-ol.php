@@ -81,11 +81,13 @@ $default_scale = array(
 					'event'     =>     50000, # 50 thousand
 					'forest'    =>     50000, # 50 thousand
 					'glacier'   =>     50000, # 50 thousand
+					'town'      =>     50000, # 50 thousand
 					'airport'   =>     30000, # 30 thousand
 					'railwaystation' =>     10000, # 10 thousand
 					'edu'       =>     10000, # 10 thousand
 					'pass'      =>     10000, # 10 thousand
 					'landmark'  =>     10000  # 10 thousand
+					'building'  =>     1500
 				);
 if (!isset($default_scale[$type])) {
 	$type = 'city';
