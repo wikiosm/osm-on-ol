@@ -86,8 +86,8 @@ $default_scale = array(
 					'railwaystation' =>     10000, # 10 thousand
 					'edu'       =>     10000, # 10 thousand
 					'pass'      =>     10000, # 10 thousand
-					'landmark'  =>     10000  # 10 thousand
-					'building'  =>     1500
+					'landmark'  =>     10000,  # 10 thousand
+					'building'  =>     1500,
 				);
 if (!isset($default_scale[$type])) {
 	$type = 'city';
