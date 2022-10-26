@@ -351,13 +351,14 @@ if (!empty($title) and detect_not_ie()){
 	var apiPath = isWikidata ? '/osmjson/test.php' : '/osmjson/getGeoJSON.php';
 	var jsonUrl = new URL(apiPath, location.href);
 	jsonUrl.searchParams.append('lang', lang);
-	jsonUrl.searchParams.append('title', urlData.searchParams.get('title'));
+	jsonUrl.searchParams.append('article', urlData.searchParams.get('title'));
 	if (!isWikidata) {
 		var action = urlData.searchParams.get('action');
 		if (action === 'purge') {
 			jsonUrl.searchParams.append('action', action);
 		}
 	}
+	console.log('jsonUrl: ', jsonUrl.toString());
 
 	OpenLayers.Request.GET({
 		url: jsonUrl.toString(),
