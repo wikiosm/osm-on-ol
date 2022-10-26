@@ -343,6 +343,7 @@ if (!empty($title) and detect_not_ie()){
 	
 										});
 	map.addLayer(vector_layer);
+	window.osm_object_layer = vector_layer;	// expose
 
 	// construct API url to get JSON of a shape
 	var urlData = new URL(location.href);
