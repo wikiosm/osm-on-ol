@@ -38,7 +38,6 @@ $notsource=addslashes(param_get('notsource'));
 if (($notsource<>"")) {$notsourceinsert=", 'notsource' : '$notsource'";} 
 
 $title=urldecode(param_get('title'));
-$action=addslashes(urldecode(param_get('action')));
 
 $title=urldecode(param_get('title'));
 if ($title=="") {$title=urldecode(param_get('pagename'));} #hack for nl.wp
@@ -327,10 +326,8 @@ function init()
 	map.addLayer(pois);
 
 <?php 
-if ($title and detect_not_ie()){
-	$actionurl = '';
-	if ($action=='purge') {$actionurl="&action=purge";}
-	$vecfile='"'."//wiwosm.toolforge.org/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
+if (!empty($title) and detect_not_ie()){
+	echo "var lang=". json_encode($lang) .";";
 ?>
 	//OSM objects Layer : Object with the Wikipedia-Tag matching with article-name
 	var styleMap = new OpenLayers.StyleMap({'pointRadius': 7,
@@ -347,11 +344,23 @@ if ($title and detect_not_ie()){
 										});
 	map.addLayer(vector_layer);
 
-	var JSONurl = <?=$vecfile?>;
-	var p = new OpenLayers.Format.GeoJSON();
+	// construct API url to get JSON of a shape
+	var urlData = new URL(location.href);
+	var isWikidata = (lang === 'wikidata');
+	// TODO: make this proxy permanent (not a test.php)
+	var apiPath = isWikidata ? '/osmjson/test.php' : '/osmjson/getGeoJSON.php';
+	var jsonUrl = new URL(apiPath, location.href);
+	jsonUrl.searchParams.append('lang', lang);
+	jsonUrl.searchParams.append('title', urlData.searchParams.get('title'));
+	if (!isWikidata) {
+		var action = urlData.searchParams.get('action');
+		if (action === 'purge') {
+			jsonUrl.searchParams.append('action', action);
+		}
+	}
 
 	OpenLayers.Request.GET({
-		url: JSONurl,
+		url: jsonUrl.toString(),
 		callback: function (response) {
 
 			if (response.status == 404) {
@@ -359,10 +368,20 @@ if ($title and detect_not_ie()){
 				vector_layer.setName(OpenLayers.i18n("OSM objects (not found)"));
 				map.removeLayer(vector_layer);
 			} else {
-				var gformat = new OpenLayers.Format.GeoJSON();
-				gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
-					response.responseText + '}]}';
-				var feats = gformat.read(gg);
+				// fallback to wiwosm server
+				if (!isWikidata) {
+					var gformat = new OpenLayers.Format.GeoJSON();
+					var gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
+						response.responseText + '}]}';
+					var feats = gformat.read(gg);
+				// shape data from wikimedia maps
+				} else {
+					var gformat = new OpenLayers.Format.GeoJSON({
+						'internalProjection': new OpenLayers.Projection("EPSG:3857"),
+						'externalProjection': new OpenLayers.Projection("EPSG:4326"),
+					});
+					var feats = gformat.read(response.responseText);
+				}
 
 				vector_layer.addFeatures(feats);
 				vector_layer.setName(OpenLayers.i18n("OSM objects (WIWOSM)"));
