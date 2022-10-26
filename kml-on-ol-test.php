@@ -67,26 +67,28 @@ if (strpos($type,"(")>0) {$type = substr($type,0,strpos($type,"("));}
 if (strpos($type,"_")>0) {$type = substr($type,0,strpos($type,"_"));}
 
 $default_scale = array(
-					'country'   =>  10000000, # 10 mill
-					'satellite' =>  10000000, # 10 mill
-					'state'     =>   3000000, # 3 mill
-					'adm1st'    =>   1000000, # 1 mill
-					'adm2nd'    =>    300000, # 300 thousand
-					'adm3rd'    =>    100000, # 100 thousand
-					'city'      =>    100000, # 100 thousand
-					'isle'      =>    100000, # 100 thousand
-					'mountain'  =>    100000, # 100 thousand
-					'river'     =>    100000, # 100 thousand
-					'waterbody' =>    100000, # 100 thousand
-					'event'     =>     50000, # 50 thousand
-					'forest'    =>     50000, # 50 thousand
-					'glacier'   =>     50000, # 50 thousand
-					'airport'   =>     30000, # 30 thousand
-					'railwaystation' =>     10000, # 10 thousand
-					'edu'       =>     10000, # 10 thousand
-					'pass'      =>     10000, # 10 thousand
-					'landmark'  =>     10000  # 10 thousand
-				);
+	'country'        => 10000000, # 10 mill
+	'satellite'      => 10000000, # 10 mill
+	'state'          =>  3000000, # 3 mill
+	'adm1st'         =>  1000000, # 1 mill
+	'adm2nd'         =>   300000, # 300 thousand
+	'adm3rd'         =>   100000, # 100 thousand
+	'city'           =>   100000, # 100 thousand
+	'isle'           =>   100000, # 100 thousand
+	'mountain'       =>   100000, # 100 thousand
+	'river'          =>   100000, # 100 thousand
+	'waterbody'      =>   100000, # 100 thousand
+	'event'          =>    50000, # 50 thousand
+	'forest'         =>    50000, # 50 thousand
+	'glacier'        =>    50000, # 50 thousand
+	'town'           =>    50000, # 50 thousand
+	'airport'        =>    30000, # 30 thousand
+	'railwaystation' =>    10000, # 10 thousand
+	'edu'            =>    10000, # 10 thousand
+	'pass'           =>    10000, # 10 thousand
+	'landmark'       =>    10000, # 10 thousand
+	'building'       =>     3000,
+);
 if (!isset($default_scale[$type])) {
 	$type = 'city';
 }
@@ -112,578 +114,563 @@ if (!empty($x)){$position.="
 echo "<!-- //position:".$position."\n dim:".$dim."\n zoomtype:".$zoomtype." -->\n";
 // Geohack end
 ?>
-		<script src="https://osm.toolforge.org/libs/jquery/latest/jquery-min.js" type="text/javascript"></script>
-		<script src="https://osm.toolforge.org/libs/openlayers/2.12/OpenLayers.js" type="text/javascript"></script>
+
+<script src="https://osm.toolforge.org/libs/jquery/latest/jquery-min.js" type="text/javascript"></script>
+<script src="https://osm.toolforge.org/libs/openlayers/2.12/OpenLayers.js" type="text/javascript"></script>
 <!--script src="//openlayers.org/dev/OpenLayers.js" type="text/javascript"></script-->
-		<!--script src="//toolserver.org/~osm/libs/openstreetmap/latest/OpenStreetMap.js" type="text/javascript"></script-->
-		<script src="./Lang/<?php echo $uselang;?>.js" type="text/javascript"></script>
+<!--script src="//toolserver.org/~osm/libs/openstreetmap/latest/OpenStreetMap.js" type="text/javascript"></script-->
+<script src="./Lang/<?php echo $uselang;?>.js" type="text/javascript"></script>
 		
-		<script type="text/javascript">
-			// map object
-			var map;
-			var poiLayerHttp;
-			var pois;
-			var osmLabelsLang;
-			var forcelocal;
-		        
-	      <?php echo "var lang = '$lang';";?>
-		if(lang=="hsb"||lang=="ru") {forcelocal=false;} else {forcelocal=false;}
+<script type="text/javascript">
+// map object
+var map;
+var poiLayerHttp;
+var pois;
+var osmLabelsLang;
+var forcelocal;
+
+<?php echo "var lang = '$lang';";?>
+if(lang=="hsb"||lang=="ru") {forcelocal=false;} else {forcelocal=false;}
 
 
 
-			// initiator
-			function init()
+// initiator
+function init()
+{
+	OpenLayers.Lang.setCode('<?php echo $uselang;?>');
+
+	/*
+	// show an error image for missing tiles
+	OpenLayers.Util.onImageLoadError = function ()
+	{
+		if (urlRegex.test(this.src))
+		{
+			var style = RegExp.$2;
+			if (style == 'osm' || style == 'osm-no-labels')
 			{
-				OpenLayers.Lang.setCode('<?php echo $uselang;?>');
-				
-				/*
-				// show an error image for missing tiles
-				OpenLayers.Util.onImageLoadError = function()
-				{ 
-					if(urlRegex.test(this.src))
-					{
-						var style = RegExp.$2;
-						if(style == 'osm'||style == 'osm-no-labels')
+				var tile = RegExp.$3;
+				var inst = RegExp.$1;
+				this.src = '//' + inst + '.tile.openstreetmap.org/' + tile;;
+
+				if (window.console && console.log)
+					console.log('redirecting request for ' + tile + ' to openstreetmap.org: ' + this.src);
+
+				return;
+			}
+			if (style == 'osm-labels-ru')
+			{
+				this.src = '//toolserver.org/~osm/libs/openlayers/latest/img/blank.gif';
+				return;
+			}
+
+			this.src = '//www.openstreetmap.org/openlayers/img/404.png';
+		}
+	};
+	*/
+
+	// get the request-parameters
+	var args = OpenLayers.Util.getParameters();
+
+	// main map object
+	map = new OpenLayers.Map ("map", {
+		controls: [
+			new OpenLayers.Control.Navigation(),
+			new OpenLayers.Control.PanZoomBar(),
+			new OpenLayers.Control.Attribution(),
+			new OpenLayers.Control.LayerSwitcher(),
+			new OpenLayers.Control.Permalink(),
+			new OpenLayers.Control.ScaleLine({geodesic:true})
+			//new OpenLayers.Control.KeyboardDefaults()
+		],
+		
+		// mercator bounds
+		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+		maxResolution: 156543.0399,
+		
+		numZoomLevels: 19,
+		units: 'm',
+		projection: new OpenLayers.Projection("EPSG:900913"),
+		displayProjection: new OpenLayers.Projection("EPSG:4326")
+	});
+
+
+	// create the custom layer
+	OpenLayers.Layer.OSM.Toolserver = OpenLayers.Class(OpenLayers.Layer.OSM, {
+		
+		initialize: function(name, options) {
+			var url = [
+				"//a.toolserver.org/tiles/" + name + "/${z}/${x}/${y}.png",
+				"//b.toolserver.org/tiles/" + name + "/${z}/${x}/${y}.png",
+				"//c.toolserver.org/tiles/" + name + "/${z}/${x}/${y}.png"
+			];
+			
+			options = OpenLayers.Util.extend({numZoomLevels: 19}, options);
+			OpenLayers.Layer.OSM.prototype.initialize.apply(this, [name, url, options]);
+		},
+		
+		CLASS_NAME: "OpenLayers.Layer.OSM.Toolserver"
+	});
+
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Translated names map"),
+		"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png?lang=<?php echo $lang;?>",
+		{
+			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
+			type: 'png', serviceVersion:'',layername:'',
+			visibility: false,
+			tileOptions: { crossOriginKeyword: null },
+			transitionEffect: 'resize' 
+		}
+	));
+
+
+
+	var urlRegex = new RegExp('^//([abc]).toolserver.org/tiles/([^/]+)/(.*)$');
+
+	var osm = new OpenLayers.Layer.OSM(OpenLayers.i18n("Local names map"),
+		"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",
+		{
+			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
+			transitionEffect: 'resize',
+			tileOptions: {
+				'eventListeners': {
+					'loaderror': function(evt) {
+							
+						if(urlRegex.test(this.url))
 						{
-							var tile = RegExp.$3;
-							var inst = RegExp.$1;
-							this.src = '//'+inst+'.tile.openstreetmap.org/'+tile;;
-							
-							if(window.console && console.log)
-								console.log('redirecting request for '+tile+' to openstreetmap.org: '+this.src);
-							
-							return;
-						}
-						if(style == 'osm-labels-ru')
-						{
-                                                this.src = '//toolserver.org/~osm/libs/openlayers/latest/img/blank.gif';
-                                                return;
-						}
-
-						this.src = '//www.openstreetmap.org/openlayers/img/404.png';
-					}
-				};
-				*/
-				
-				// get the request-parameters
-				var args = OpenLayers.Util.getParameters();
-				
-				// main map object
-				map = new OpenLayers.Map ("map", {
-					controls: [
-						new OpenLayers.Control.Navigation(),
-						new OpenLayers.Control.PanZoomBar(),
-						new OpenLayers.Control.Attribution(), 
-						new OpenLayers.Control.LayerSwitcher(), 
-						new OpenLayers.Control.Permalink(),
-						new OpenLayers.Control.ScaleLine({geodesic:true})
-						//new OpenLayers.Control.KeyboardDefaults()
-					],
+							var style = RegExp.$2;
+							if(style == 'osm'||style == 'osm-no-labels')
+							{
+								var tile = RegExp.$3;
+								var inst = RegExp.$1;
+								this.setImgSrc('//'+inst+'.tile.openstreetmap.org/'+tile);
 					
-					// mercator bounds
-					maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-					maxResolution: 156543.0399,
-					
-					numZoomLevels: 19,
-					units: 'm',
-					projection: new OpenLayers.Projection("EPSG:900913"),
-					displayProjection: new OpenLayers.Projection("EPSG:4326")
-				});
-
-
-				// create the custom layer
-				OpenLayers.Layer.OSM.Toolserver = OpenLayers.Class(OpenLayers.Layer.OSM, {
-					
-					initialize: function(name, options) {
-						var url = [
-							"//a.toolserver.org/tiles/" + name + "/${z}/${x}/${y}.png", 
-							"//b.toolserver.org/tiles/" + name + "/${z}/${x}/${y}.png", 
-							"//c.toolserver.org/tiles/" + name + "/${z}/${x}/${y}.png"
-						];
-						
-						options = OpenLayers.Util.extend({numZoomLevels: 19}, options);
-						OpenLayers.Layer.OSM.prototype.initialize.apply(this, [name, url, options]);
-					},
-					
-					CLASS_NAME: "OpenLayers.Layer.OSM.Toolserver"
-				});
-
-				map.addLayer(new OpenLayers.Layer.OSM("International",
-					"https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png?lang=<?php echo $lang;?>",  
-					  {attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>', type: 'png', serviceVersion:'',layername:'',
-					visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-			        
-			        
-
-				var urlRegex = new RegExp('^//([abc]).toolserver.org/tiles/([^/]+)/(.*)$');
-
-                                var osm = new OpenLayers.Layer.OSM('osm', "//maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",{ 
-					attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
-					transitionEffect: 'resize',
-					tileOptions: {
-						'eventListeners': {
-							'loaderror': function(evt) {
-								   
-								if(urlRegex.test(this.url))
-								{
-									var style = RegExp.$2;
-									if(style == 'osm'||style == 'osm-no-labels')
-									{
-										var tile = RegExp.$3;
-										var inst = RegExp.$1;
-										this.setImgSrc('//'+inst+'.tile.openstreetmap.org/'+tile);
-							
-										if(window.console && console.log)
-											console.log('redirecting request for '+tile+' to openstreetmap.org: '+this.url);
-							                          // alert ('test:URL' + this.url + '  //'+inst+'.tile.openstreetmap.org/'+tile );
-										return;
-									}
-									if(style == 'osm-labels-ru')
-									{
-										this.setImgSrc('//toolserver.org/~osm/libs/openlayers/latest/img/blank.gif');
-										return;
-									}
-
-									this.setImgSrc('//www.openstreetmap.org/openlayers/img/404.png');
-								}
+								if(window.console && console.log)
+									console.log('redirecting request for '+tile+' to openstreetmap.org: '+this.url);
+									// alert ('test:URL' + this.url + '  //'+inst+'.tile.openstreetmap.org/'+tile );
+								return;
 							}
-						},
-						crossOriginKeyword: null
+							if(style == 'osm-labels-ru')
+							{
+								this.setImgSrc('//toolserver.org/~osm/libs/openlayers/latest/img/blank.gif');
+								return;
+							}
+
+							this.setImgSrc('//www.openstreetmap.org/openlayers/img/404.png');
+						}
 					}
-				})
-				osm.setIsBaseLayer(true);
-				osm.setVisibility(true);
-                                map.addLayer(osm);
-                                var osmNoLabels = new OpenLayers.Layer.OSM.Toolserver('osm-no-labels',{
-					attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
-					visibility: false,
-					tileOptions: { crossOriginKeyword: null }
-				} ,
-                                {isBaseLayer:true                  });
-				osmNoLabels.setIsBaseLayer(true);
-				osmNoLabels.setVisibility(false);
-                                map.addLayer(osmNoLabels);
-                                
-				//Place for OSM.org
-				map.addLayer(new OpenLayers.Layer.OSM("OSM.org",
-					"//a.tile.openstreetmap.org/${z}/${x}/${y}.png",
-					{attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-				
-				
-				map.addLayer(new OpenLayers.Layer.OSM("maps.wikimedia",
-					"//maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png",
-					{attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
-					visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-				
-								                                
-				map.addLayer(new OpenLayers.Layer.OSM("Public Transport (&Ouml;PNV)",
-					"http://tile.memomaps.de/tilegen/${z}/${x}/${y}.png",  {attribution:'Map © OpenStreetMap contributors',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-				
-				//map.addLayer(new OpenLayers.Layer.OSM("hires",	 
-				//	 "//mull.geofabrik.de/osm2x/${z}/${x}/${y}.png",
-				//	    {attribution:' <a target="_blank" href="//www.geofabrik.de">Geofabrik experiemental</a>',
-				//	visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
-				
-				<?php if($lang=="de" and empty($_SERVER["HTTP_X_TS_SSL"])) {echo "map.addLayer(new OpenLayers.Layer.OSM('germany','http://tile.openstreetmap.de/tiles/osmde/".'${z}/${x}/${y}'.".png',  {attribution:'Karte © OpenStreetMap Mitwirkenden',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));";}?>
-                                  
-               
-		 osmLabelsLang = new OpenLayers.Layer.OSM('osm-labels-<?php echo $lang;?>',"//tiles.wmflabs.org/osm-multilingual/<?php echo $lang;?>,_/${z}/${x}/${y}.png", {isBaseLayer: false, visibility: false, tileOptions: { crossOriginKeyword: null }, attribution:''});
-		map.addLayers([osmLabelsLang]);
+				},
+				crossOriginKeyword: null
+			}
+		}
+	)
+	osm.setIsBaseLayer(true);
+	osm.setVisibility(true);
+	map.addLayer(osm);
+	var osmNoLabels = new OpenLayers.Layer.OSM.Toolserver('osm-no-labels',{
+			attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',
+			visibility: false,
+			tileOptions: { crossOriginKeyword: null }
+		} ,
+		{isBaseLayer:true}
+	);
+	// un-maintained, doesn't work
+	/**
+	osmNoLabels.setIsBaseLayer(true);
+	osmNoLabels.setVisibility(false);
+	map.addLayer(osmNoLabels);
+	/**/
+
+	//Place for OSM.org
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("OSM.org map"),
+		"//a.tile.openstreetmap.org/${z}/${x}/${y}.png",
+		{attribution:'<?php echo translate('map-by',$uselang);?> © <a target="_blank" href="//www.openstreetmap.org/copyright"><?php echo translate('openstreetmap-contributors',$uselang);?></a>',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
 
 
-     // Wikipedia-World Layer			
-    var bboxStrategy = new OpenLayers.Strategy.BBOX( {
-        ratio : 1.1,
-        resFactor: 1
-    });	
+	map.addLayer(new OpenLayers.Layer.OSM(OpenLayers.i18n("Public transport map"),
+		"http://tile.memomaps.de/tilegen/${z}/${x}/${y}.png",  {attribution:'Map © OpenStreetMap contributors',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
+
+	//map.addLayer(new OpenLayers.Layer.OSM("hires",
+	//	 "//mull.geofabrik.de/osm2x/${z}/${x}/${y}.png",
+	//	    {attribution:' <a target="_blank" href="//www.geofabrik.de">Geofabrik experiemental</a>',
+	//	visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));
+
+	<?php if($lang=="de" and empty($_SERVER["HTTP_X_TS_SSL"])) {echo "map.addLayer(new OpenLayers.Layer.OSM('germany','http://tile.openstreetmap.de/tiles/osmde/".'${z}/${x}/${y}'.".png',  {attribution:'Karte © OpenStreetMap Mitwirkenden',visibility: false, tileOptions: { crossOriginKeyword: null },transitionEffect: 'resize' }));";}?>
+	
+
+	osmLabelsLang = new OpenLayers.Layer.OSM('osm-labels-<?php echo $lang;?>',"//tiles.wmflabs.org/osm-multilingual/<?php echo $lang;?>,_/${z}/${x}/${y}.png", {isBaseLayer: false, visibility: false, tileOptions: { crossOriginKeyword: null }, attribution:''});
+	// unmainted, doesn't work
+	// map.addLayers([osmLabelsLang]);
 
 
-    poiLayerHttp = new OpenLayers.Protocol.HTTP({
-        url: "//wp-world.toolforge.org/marks.php?",
-        params: { 'LANG' : <?php echo "'".$langwiki."'".$coatsinsert.$thumbsinsert.$popinsert.$styleinsert.$photoinsert.$sourceinsert.$notsourceinsert.$classesinsert;?>},
-        format: new OpenLayers.Format.KML({
-            extractStyles: true, 
-            extractAttributes: true
-		 })
-    });     
-    pois = new OpenLayers.Layer.Vector("Wikipedia World", {
-        attribution:'<a target="_blank" href="//de.wikipedia.org/wiki/Wikipedia:WikiProjekt_Georeferenzierung/Wikipedia-World/en"><?php echo translate('wikipedia',$uselang);?></a> (CC-BY-SA)',
-        projection: new OpenLayers.Projection("EPSG:4326"),
-        strategies: [bboxStrategy],
-        protocol: poiLayerHttp
-    });
-    
-    map.addLayer(pois);
+	// Wikipedia-World Layer			
+	var bboxStrategy = new OpenLayers.Strategy.BBOX( {
+		ratio : 1.1,
+		resFactor: 1
+	});
 
+
+	poiLayerHttp = new OpenLayers.Protocol.HTTP({
+		url: "//wp-world.toolforge.org/marks.php?",
+		params: { 'LANG' : <?php echo "'".$langwiki."'".$coatsinsert.$thumbsinsert.$popinsert.$styleinsert.$photoinsert.$sourceinsert.$notsourceinsert.$classesinsert;?>},
+		format: new OpenLayers.Format.KML({
+		extractStyles: true,
+		extractAttributes: true
+			})
+	});
+	pois = new OpenLayers.Layer.Vector(OpenLayers.i18n("Wikipedia World"), {
+		attribution:'<a target="_blank" href="//de.wikipedia.org/wiki/Wikipedia:WikiProjekt_Georeferenzierung/Wikipedia-World/en"><?php echo translate('wikipedia',$uselang);?></a> (CC-BY-SA)',
+		projection: new OpenLayers.Projection("EPSG:4326"),
+		strategies: [bboxStrategy],
+		protocol: poiLayerHttp
+	});
+	
+	map.addLayer(pois);
 
 <?php 
 if ($title and detect_not_ie()){
-$actionurl = '';
-if ($action=='purge') {$actionurl="&action=purge";}
-$vecfile='"'."//wiwosm.toolforge.org/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
-//$vecfile='"'.'/osmjson/getGeoJSON-test.php?lang=wikidata&article=Q782455'.'"';
-$vecfile='"'.'/osmjson/test.php?lang=wikidata&article='.rawurlencode($title).'"';
-
-print <<<END
-    //OSM objects Layer : Object with the Wikipedia-Tag matching with article-name
-
-    var styleMap = new OpenLayers.StyleMap({'pointRadius': 7,
-					    'strokeWidth': 3,
-					    'strokeColor': '#ff0000',
-					    'fillColor': '#ff0000',
-					    'fillOpacity': .3
-                         });
-
-    var vector_layer = new OpenLayers.Layer.Vector("OSM objects (loading...)",{
-				styleMap: styleMap,
-				attribution:' <a target="_blank" href="//wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (<a target="_blank" href="//opendatacommons.org/licenses/odbl/">ODbL</a>) '
-       
-									    });
-    map.addLayer(vector_layer);
-
-    var JSONurl = $vecfile;
-    //alert ("$lang $title");
-    var p = new OpenLayers.Format.GeoJSON();
-
-    OpenLayers.Request.GET({url:JSONurl, 
-			    callback:function (response) {
-
-    if(response.status == 404) {
-        vector_layer.setVisibility(false);
-	vector_layer.setName("OSM objects (not found)");
-			      }
-    else {
-    var gformat = new OpenLayers.Format.GeoJSON({
-            'internalProjection': map.baseLayer.projection,
-            'externalProjection': new OpenLayers.Projection("EPSG:3857")
-        });
-	/*
-    gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
-	  response.responseText + '}]}';
-    var feats = gformat.read(gg);
-	  */
-    var feats = gformat.read(response.responseText);
-	//var feats = gformat.readFeatures(response.responseText, { featureProjection: 'EPSG:3857' });
-	console.log(feats, JSON.parse(response.responseText), vector_layer);
-	
-    vector_layer.addFeatures(feats);
-    vector_layer.setName("OSM objects (WIWOSM)");
-    document.title = args.title+" on OpenStreetMap";
-
-      if (vector_layer.getDataExtent().getHeight()>500) 
-	{ map.zoomToExtent (vector_layer.getDataExtent(),false);} 
-     
-     if (!args.lon && vector_layer.getDataExtent().getHeight()<=500) 
-	{map.setCenter (vector_layer.getDataExtent().getCenterLonLat(),17);}  
-         }
-    }}
-    );
-END;
-}
+	$actionurl = '';
+	if ($action=='purge') {$actionurl="&action=purge";}
+	$vecfile='"'."//wiwosm.toolforge.org/osmjson/getGeoJSON.php?lang=$lang&article=".rawurlencode($title).$actionurl.'"';
 ?>
+	//OSM objects Layer : Object with the Wikipedia-Tag matching with article-name
+	var styleMap = new OpenLayers.StyleMap({'pointRadius': 7,
+						'strokeWidth': 3,
+						'strokeColor': '#ff0000',
+						'fillColor': '#ff0000',
+						'fillOpacity': .3
+	});
+
+	var vector_layer = new OpenLayers.Layer.Vector(OpenLayers.i18n("OSM objects (loading...)"),{
+					styleMap: styleMap,
+					attribution:' <a target="_blank" href="//wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (<a target="_blank" href="//opendatacommons.org/licenses/odbl/">ODbL</a>) '
+	
+										});
+	map.addLayer(vector_layer);
+
+	var JSONurl = <?=$vecfile?>;
+	var p = new OpenLayers.Format.GeoJSON();
+
+	OpenLayers.Request.GET({
+		url: JSONurl,
+		callback: function (response) {
+
+			if (response.status == 404) {
+				vector_layer.setVisibility(false);
+				vector_layer.setName(OpenLayers.i18n("OSM objects (not found)"));
+				map.removeLayer(vector_layer);
+			} else {
+				var gformat = new OpenLayers.Format.GeoJSON();
+				gg = '{"type":"FeatureCollection", "features":[{"geometry": ' +
+					response.responseText + '}]}';
+				var feats = gformat.read(gg);
+
+				vector_layer.addFeatures(feats);
+				vector_layer.setName(OpenLayers.i18n("OSM objects (WIWOSM)"));
+				document.title = args.title + " on OpenStreetMap";
+
+				if (vector_layer.getDataExtent().getHeight() > 500) {
+					map.zoomToExtent(vector_layer.getDataExtent(), false);
+				}
+
+				if (!args.lon && vector_layer.getDataExtent().getHeight() <= 500) {
+					map.setCenter(vector_layer.getDataExtent().getCenterLonLat(), 17);
+				}
+			}
+		}
+	});
+<?php } ?>
+
   
 
-    var feature = null;
-    var highlightFeature = null;
-    var tooltipTimeout = false;
-    var lastFeature = null;
-    var selectPopup = null;
-    var tooltipPopup = null;
-    
-    var selectCtrl = new OpenLayers.Control.SelectFeature(pois, {
-        toggle:true, 
-  	    clickout: true
-  	});
-    pois.events.on({ "featureselected": onMarkerSelect, "featureunselected": onMarkerUnselect});
-    
-      map.events.register("zoomend", map, zoomEnd);
+	var feature = null;
+	var highlightFeature = null;
+	var tooltipTimeout = false;
+	var lastFeature = null;
+	var selectPopup = null;
+	var tooltipPopup = null;
 
-    function onMarkerSelect  (evt) {
-        eventTooltipOff(evt);
-        if(selectPopup != null) {
-            map.removePopup(selectPopup);
-            selectPopup.feature=null;
-            if(feature != null && feature.popup != null){
-                feature.popup = null;
-            }
-        }    
-        feature = evt.feature;
-        //console.log("feature selected", feature) ;
-        //console.log("features in layer", pois.features.length);
-        selectPopup = new OpenLayers.Popup.AnchoredBubble("activepopup",
-                feature.geometry.getBounds().getCenterLonLat(),
-                new OpenLayers.Size(220,170),
-                text='<b>'+feature.attributes.name +'</b><br>'+ feature.attributes.description, 
-                null, true, onMarkerPopupClose );
-    	
-        selectPopup.closeOnMove = false;
-        selectPopup.autoSize = false;    	
-    	feature.popup = selectPopup;
-    	selectPopup.feature = feature;     	
-    	map.addPopup(selectPopup);
-    }
+	var selectCtrl = new OpenLayers.Control.SelectFeature(pois, {
+		toggle:true,
+		clickout: true
+	});
+	pois.events.on({ "featureselected": onMarkerSelect, "featureunselected": onMarkerUnselect});
 
-    function onMarkerUnselect  (evt) {
-    	feature = evt.feature;
-        if(feature != null && feature.popup != null){
-            selectPopup.feature = null;            
-            map.removePopup(feature.popup);
-            feature.popup = null;
-        } 
-    }
-    
+	map.events.register("zoomend", map, zoomEnd);
 
-    function onMarkerPopupClose(evt) {
-        if(selectPopup != null) {
-            map.removePopup(selectPopup);
-            selectPopup.feature = null;            
-            if(feature != null && feature.popup != null) {
-                feature.popup = null;
-            }    
-        }    
-        selectCtrl.unselectAll();
-    }
-
-
-    var highlightCtrl = new OpenLayers.Control.SelectFeature(pois, {
-        hover: true,
-        highlightOnly: true,
-        renderIntent: "temporary",
-        eventListeners: {
-            featurehighlighted: eventTooltipOn,
-            featureunhighlighted: eventTooltipOff
-        }
-    });
-
-    function eventTooltipOn  (evt) {
-        highlightFeature = evt.feature;           
-        if(tooltipPopup != null) {
-            map.removePopup(tooltipPopup);
-            tooltipPopup.feature=null;
-            if(lastFeature != null) {
-                lastFeature.popup = null;                                
-            }    
-        }    
-        lastFeature = highlightFeature;
-             
-      	//document.getElementById("map_OpenLayers_Container").style.cursor = "pointer";
-      	
-         tooltipPopup = new OpenLayers.Popup("activetooltip",
-                highlightFeature.geometry.getBounds().getCenterLonLat(),
-                new OpenLayers.Size(220,20),
-                highlightFeature.attributes.name, null, false, null );
-    	if(tooltipTimeout) clearTimeout(tooltipTimeout);
-    	tooltipPopup.closeOnMove = true;
-    	tooltipPopup.autoSize = true;    	
-    	map.addPopup(tooltipPopup);    	
-    }
-
-    function eventTooltipOff  (evt) {
-        highlightFeature = evt.feature;            
-        //document.getElementById("map_OpenLayers_Container").style.cursor = "default"; 
-	
-	if(tooltipPopup)
-        {
-            tooltipTimeout = setTimeout(function() {
-                map.removePopup(tooltipPopup);
-                tooltipPopup = null;
-            }, 500);
-        }
-
-     	
-        if(highlightFeature != null && highlightFeature.popup != null){
-            map.removePopup(highlightFeature.popup);
-            highlightFeature.popup = null;
-            tooltipPopup = null;
-            lastFeature = null;            
-        } 
-  	}
-
-     function zoomEnd() {
-      var scale = map.getScale();
-      //alert (lang);
-      if (scale>10000000) {
-          $(".olControlScaleLine").css('display', 'none');
-      } else {
-          $(".olControlScaleLine").css('display', 'block');
-      } 
- 
-      // below zoom 6 we switch from layer "osm" to layer "osm-no-labels" + "osm-labels-de"
-      if((map.getZoom() <= -6 || forcelocal) && map.baseLayer.id == osm.id)
-      { 
-          map.setBaseLayer(osmNoLabels);
-          osmLabelsLang.setVisibility(true);
-      }
-      if(map.getZoom() <= - 6 || forcelocal)
-      {
-	  osmLabelsLang.displayInLayerSwitcher=true;
-	  
-	  osmNoLabels.displayInLayerSwitcher=true;
-      }
-      
-      // above zoom 6 we switch back to the usual osm layer
-      else if(map.getZoom() > -6 && map.baseLayer.id == osmNoLabels.id  && !forcelocal)
-      {   
-          map.setBaseLayer(osm);
-          osmLabelsLang.setVisibility(false);
-      }
-      if(map.getZoom() > -6  && !forcelocal && map.baseLayer.id == osm.id)
-      { 
-	  osmLabelsLang.displayInLayerSwitcher=false; 
-	  osmNoLabels.displayInLayerSwitcher=false;
-      }
-   
-     if (map.baseLayer.name=='Satellite' && (forcelocal || lang=='de'))
-        {osmLabelsLang.setVisibility(false);} 
-     if (!(map.baseLayer.name=='Satellite' || map.baseLayer.id == osmNoLabels.id))
-        {osmLabelsLang.setVisibility(false);} 
- 
-    }
-    
-
-
-
-    map.addControl(highlightCtrl);
-    map.addControl(selectCtrl);
-    highlightCtrl.activate();
-    selectCtrl.activate();    
-    
-       zoomEnd();  
-
-
-
-
-
-
-
-				// default zoon
-				
-				
-			      <?php echo $position;?>
-
-				// lat/lon requestes
-				if(args.lon && args.lat)
-				{
-					// zoom requested
-					if(args.zoom)
-					{
-						zoom = parseInt(args.zoom);
-						var maxZoom = map.getNumZoomLevels();
-						if (zoom >= maxZoom) zoom = maxZoom - 1;
-					}
-					
-					// transform center
-					var center = new OpenLayers.LonLat(parseFloat(args.lon), parseFloat(args.lat)).
-						transform(map.displayProjection, map.getProjectionObject())
-					
-					// move to
-					map.setCenter(center, zoom);
-				}
-				
-				// bbox requestet
-				else if (args.bbox)
-				{
-					// transform bbox
-					var bounds = OpenLayers.Bounds.fromArray(args.bbox).
-						transform(map.displayProjection, map.getProjectionObject());
-					
-					// move to
-					map.zoomToExtent(bounds)
-				}
-				
-				// default center
-				else
-				{
-					// set the default center
-					var center = new OpenLayers.LonLat(0, 0).
-						transform(map.displayProjection, map.getProjectionObject());
-					
-					// move to
-					map.setCenter(center, zoom);
-				}
-     var markers = new OpenLayers.Layer.Markers( "Marker", {
-        attribution:' <a target="_blank" href="//<?php echo $lang;?>.wikipedia.org/wiki/Help:OpenStreetMap"> <?php echo translate('help',$uselang);?> </a>' } );
-            map.addLayer(markers);
-
-            var size = new OpenLayers.Size(16,16);
-            var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
-            var icon = new OpenLayers.Icon('Ol_icon_red_example.png',size,offset);
-            markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(map.center.lon,map.center.lat),icon));
+	function onMarkerSelect  (evt) {
+		eventTooltipOff(evt);
+		if(selectPopup != null) {
+			map.removePopup(selectPopup);
+			selectPopup.feature=null;
+			if(feature != null && feature.popup != null){
+				feature.popup = null;
 			}
+		}
+		feature = evt.feature;
+		//console.log("feature selected", feature) ;
+		//console.log("features in layer", pois.features.length);
+		selectPopup = new OpenLayers.Popup.AnchoredBubble("activepopup",
+			feature.geometry.getBounds().getCenterLonLat(),
+			new OpenLayers.Size(220,170),
+			text='<b>'+feature.attributes.name +'</b><br>'+ feature.attributes.description,
+			null, true, onMarkerPopupClose );
+		
+		selectPopup.closeOnMove = false;
+		selectPopup.autoSize = false;
+		feature.popup = selectPopup;
+		selectPopup.feature = feature;
+		map.addPopup(selectPopup);
+	}
+
+	function onMarkerUnselect  (evt) {
+		feature = evt.feature;
+		if(feature != null && feature.popup != null){
+			selectPopup.feature = null;
+			map.removePopup(feature.popup);
+			feature.popup = null;
+		}
+	}
+	
+
+	function onMarkerPopupClose(evt) {
+		if(selectPopup != null) {
+			map.removePopup(selectPopup);
+			selectPopup.feature = null;
+			if(feature != null && feature.popup != null) {
+				feature.popup = null;
+			}
+		}
+		selectCtrl.unselectAll();
+	}
+
+
+	var highlightCtrl = new OpenLayers.Control.SelectFeature(pois, {
+		hover: true,
+		highlightOnly: true,
+		renderIntent: "temporary",
+		eventListeners: {
+		featurehighlighted: eventTooltipOn,
+		featureunhighlighted: eventTooltipOff
+		}
+	});
+
+	function eventTooltipOn  (evt) {
+		highlightFeature = evt.feature;
+		if(tooltipPopup != null) {
+			map.removePopup(tooltipPopup);
+			tooltipPopup.feature=null;
+			if(lastFeature != null) {
+				lastFeature.popup = null;
+			}
+		}
+		lastFeature = highlightFeature;
+		
+		//document.getElementById("map_OpenLayers_Container").style.cursor = "pointer";
+		
+		tooltipPopup = new OpenLayers.Popup("activetooltip",
+			highlightFeature.geometry.getBounds().getCenterLonLat(),
+			new OpenLayers.Size(220,20),
+			highlightFeature.attributes.name, null, false, null );
+		if(tooltipTimeout) clearTimeout(tooltipTimeout);
+		tooltipPopup.closeOnMove = true;
+		tooltipPopup.autoSize = true;
+		map.addPopup(tooltipPopup);
+	}
+
+	function eventTooltipOff  (evt) {
+		highlightFeature = evt.feature;
+		//document.getElementById("map_OpenLayers_Container").style.cursor = "default";
+		
+		if(tooltipPopup)
+		{
+			tooltipTimeout = setTimeout(function() {
+				map.removePopup(tooltipPopup);
+				tooltipPopup = null;
+			}, 500);
+		}
+
+		
+		if(highlightFeature != null && highlightFeature.popup != null){
+			map.removePopup(highlightFeature.popup);
+			highlightFeature.popup = null;
+			tooltipPopup = null;
+			lastFeature = null;
+		}
+	}
+
+	function zoomEnd() {
+		var scale = map.getScale();
+		//alert (lang);
+		if (scale>10000000) {
+			$(".olControlScaleLine").css('display', 'none');
+		} else {
+			$(".olControlScaleLine").css('display', 'block');
+		}
+		
+		/**
+		// below zoom 6 we switch from layer "osm" to layer "osm-no-labels" + "osm-labels-de"
+		if((map.getZoom() <= 6 || forcelocal) && map.baseLayer.id == osm.id)
+		{
+			map.setBaseLayer(osmNoLabels);
+			osmLabelsLang.setVisibility(true);
+		}
+		if(map.getZoom() <= 6 || forcelocal)
+		{
+			osmLabelsLang.displayInLayerSwitcher=true;
+			
+			osmNoLabels.displayInLayerSwitcher=true;
+		}
+		
+		// above zoom 6 we switch back to the usual osm layer
+		else if(map.getZoom() > 6 && map.baseLayer.id == osmNoLabels.id  && !forcelocal)
+		{
+			map.setBaseLayer(osm);
+			osmLabelsLang.setVisibility(false);
+		}
+		if(map.getZoom() > 6  && !forcelocal && map.baseLayer.id == osm.id)
+		{
+			osmLabelsLang.displayInLayerSwitcher=false;
+			osmNoLabels.displayInLayerSwitcher=false;
+		}
+	
+		if (map.baseLayer.name=='Satellite' && (forcelocal || lang=='de'))
+			{osmLabelsLang.setVisibility(false);}
+		if (!(map.baseLayer.name=='Satellite' || map.baseLayer.id == osmNoLabels.id))
+			{osmLabelsLang.setVisibility(false);}
+		/**/
+	}
+	
 
 
 
+	map.addControl(highlightCtrl);
+	map.addControl(selectCtrl);
+	highlightCtrl.activate();
+	selectCtrl.activate();
+
+	zoomEnd();
 
 
 
+	// default zoom and lon/lat
+	<?php echo $position;?>
 
-  function hideInsetMenu() {
-                $('#mapInsetMenuDropdown').css('visibility', 'hidden');
-            }
-            function showInsetMenu() {
-                $('#mapInsetMenuDropdown').css('visibility', 'visible');
-            }
+	// lat/lon requestes
+	if(args.lon && args.lat)
+	{
+		// zoom requested
+		if(args.zoom)
+		{
+			zoom = parseInt(args.zoom);
+			var maxZoom = map.getNumZoomLevels();
+			if (zoom >= maxZoom) zoom = maxZoom - 1;
+		}
+		
+		// transform center
+		var center = new OpenLayers.LonLat(parseFloat(args.lon), parseFloat(args.lat)).
+			transform(map.displayProjection, map.getProjectionObject())
+		
+		// move to
+		map.setCenter(center, zoom);
+	}
 
-        
+	// bbox requestet
+	else if (args.bbox)
+	{
+		// transform bbox
+		var bounds = OpenLayers.Bounds.fromArray(args.bbox).
+			transform(map.displayProjection, map.getProjectionObject());
+		
+		// move to
+		map.zoomToExtent(bounds)
+	}
 
-	    
+	// default center
+	else
+	{
+		// set the default center
+		var center = new OpenLayers.LonLat(0, 0).
+			transform(map.displayProjection, map.getProjectionObject());
+		
+		// move to
+		map.setCenter(center, zoom);
+	}
+	var markers = new OpenLayers.Layer.Markers( OpenLayers.i18n("Marker"), {
+		attribution:' <a target="_blank" href="//<?php echo $lang;?>.wikipedia.org/wiki/Help:OpenStreetMap"> <?php echo translate('help',$uselang);?> </a>'
+	} );
+	map.addLayer(markers);
 
+	var size = new OpenLayers.Size(16,16);
+	var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
+	var icon = new OpenLayers.Icon('Ol_icon_red_example.png',size,offset);
+	markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(map.center.lon,map.center.lat),icon));
+
+} // init()
+
+
+//
+// Thumbnails and coats markers (large images)
+//
+// show/hide image-markers options
+function hideInsetMenu() {
+	$('#mapInsetMenuDropdown').css('visibility', 'hidden');
+}
+function showInsetMenu() {
+	$('#mapInsetMenuDropdown').css('visibility', 'visible');
+}
+// load image-markers wikipedias list
 $.ajax({
-   type: "GET",
-   url: "lang-select.php",
-   data: "lang=<?php echo $uselang;?>",
-   success: function(msg){
-       $('#mapInsetMenuDropdown').empty();
-       $(msg).appendTo('#mapInsetMenuDropdown');
-	$(function() {
-                $('.menuSelect').change(function() {
-                    if ($(this).attr('checked')==true) {
-                        poiLayerHttp.params[$(this).val()] = 'yes';
-			  $('.menuSelect2').removeAttr('checked');
-			  poiLayerHttp.params[$('.menuSelect2').val()] = 'no';
-                    } else {
-                        poiLayerHttp.params[$(this).val()] = 'no';
-                    }
-                    pois.redraw(true);
-                  });    
-            });
+	type: "GET",
+	url: "lang-select.php",
+	data: "lang=<?=$uselang?>",
+	success: function (html) {
+		$('#mapInsetMenu-languages').empty();
+		$(html).appendTo('#mapInsetMenu-languages');
+	}
+});
+// image-markers interactions
+$(function () {
+	$('#mapInsetMenu-thumbs').change(function () {
+		if ($(this).attr('checked') == true) {
+			poiLayerHttp.params[$(this).val()] = 'yes';
+			$('#mapInsetMenu-coats').removeAttr('checked');
+			poiLayerHttp.params[$('#mapInsetMenu-coats').val()] = 'no';
+		} else {
+			poiLayerHttp.params[$(this).val()] = 'no';
+		}
+		pois.redraw(true);
+	});
 
-	$(function() {
-                $('.menuSelect2').change(function() {
-                    if ($(this).attr('checked')==true) {
-                        poiLayerHttp.params[$(this).val()] = 'yes';
-			  $('.menuSelect').removeAttr('checked');
-			poiLayerHttp.params[$('.menuSelect').val()] = 'no';
+	$('#mapInsetMenu-coats').change(function () {
+		if ($(this).attr('checked') == true) {
+			poiLayerHttp.params[$(this).val()] = 'yes';
+			$('#mapInsetMenu-thumbs').removeAttr('checked');
+			poiLayerHttp.params[$('#mapInsetMenu-thumbs').val()] = 'no';
 
-                    } else {
-                        poiLayerHttp.params[$(this).val()] = 'no';
-                    }
-                    pois.redraw(true);
-                  });    
-            });
-   
-	$(function() {
-                $('.menuSelectlist').change(function() {
-     
-                   poiLayerHttp.params.LANG = $(this).val();
-		    if ($(this).val()!='') {
-		   osmLabelsLang.name="osm-labels-"+$(this).val();
-		   osmLabelsLang.url = [
-							"//a.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png", 
-							"//b.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png", 
-							"//c.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png"
-						];
-		   osmLabelsLang.redraw(true);
-		    }
-                   pois.redraw(true);
-                  });    
-            });
+		} else {
+			poiLayerHttp.params[$(this).val()] = 'no';
+		}
+		pois.redraw(true);
+	});
 
+	$('#mapInsetMenu-languages').change(function () {
 
-   }
- });
-
-		</script>
+		poiLayerHttp.params.LANG = $(this).val();
+		/**
+		if ($(this).val() != '') {
+			osmLabelsLang.name = "osm-labels-" + $(this).val();
+			osmLabelsLang.url = [
+				"//a.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png",
+				"//b.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png",
+				"//c.toolserver.org/tiles/" + osmLabelsLang.name + "/${z}/${x}/${y}.png"
+			];
+			osmLabelsLang.redraw(true);
+		}
+		/**/
+		pois.redraw(true);
+	});
+});
+</script>
 
 <style type="text/css">
 			body {
@@ -801,45 +788,59 @@ $.ajax({
 			box-shadow: 2px 2px 2px #666;
 			-moz-box-shadow: 2px 2px 2px #666;
 			}
-
-
+			#mapInsetMenuDropdown label {
+			font-weight: bold;
+			}
+			#mapInsetMenuDropdown .languages label {
+			display: block;
+			padding: .5em 0;
+			}
+			#mapInsetMenuDropdown .languages {
+			padding-top: 0;
+			margin-top: 0;
+			margin-inline: .3em;
+			}
+			#mapInsetMenu-languages {
+			width: 100%;
+			box-sizing: border-box;
+			}
 		</style>
 
 	</head>
 	 
 	<body onload="init();">
 
-<div id="mapContainer"  style="width: 100%; height: 100%">   
-    <div style="width: 100%; height: 100%" id="map">
+<div id="mapContainer" style="width: 100%; height: 100%">
+	<div style="width: 100%; height: 100%" id="map">
 
-    </div>
-    
-    <div id="mapInsetMenu" class="mapBtnOuter" onmouseout="javascript:hideInsetMenu()" onmouseover="javascript:showInsetMenu()">
-        <div id="mapInsetMenuI" class="mapBtnInner">
-            <?php echo translate('options',$uselang);?>
-        </div>
-        <div id="mapInsetMenuDropdown">        
-             
-		
-		<p>
-		<b><?php echo translate('thumbnails',$uselang);?></b><br />
-		<input class="menuSelect" type="checkbox" name="thumbs" value="thumbs"/>
-		<p>
-		<b><?php echo "Coats".translate('coat-of-arms',$uselang);?></b><br />
-		<input class="menuSelect2" type="checkbox" name="CoA" value="thumbs"/>
-             <br>
-<b>
-<?php echo translate('languages',$uselang);?>
-</b><br />
-<select class="menuSelectlist" name="top5" size="5"> 
-<option value=""> ALL  </option>
-<option value="de">Deutsch</option>
-<option value="en">English</option>
-</select>
-        </div>
+	</div>
 
-    </div>
-     
+	<div id="mapInsetMenu" class="mapBtnOuter" onmouseout="hideInsetMenu()"
+		onmouseover="showInsetMenu()">
+		<div id="mapInsetMenuI" class="mapBtnInner">
+			<?=translate('options',$uselang)?>
+		</div>
+		<div id="mapInsetMenuDropdown">
+			<p class="languages">
+				<label for="mapInsetMenu-languages"><?=translate('languages',$uselang)?></label>
+				<select id="mapInsetMenu-languages" size="5">
+					<option value="">ALL</option>
+					<option value="de">Deutsch</option>
+					<option value="en">English</option>
+				</select>
+			</p>
+			<p class="thumbs">
+				<input  id="mapInsetMenu-thumbs" type="checkbox" value="thumbs" />
+				<label for="mapInsetMenu-thumbs"><?=translate('thumbnails',$uselang)?></label>
+			</p>
+			<p class="coats">
+				<input  id="mapInsetMenu-coats" type="checkbox" value="coats" />
+				<label for="mapInsetMenu-coats"><?=translate('coat-of-arms',$uselang)?></label>
+			</p>
+		</div>
+
+	</div>
+
 </div>
 
 	</body>
