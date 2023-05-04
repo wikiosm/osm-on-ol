@@ -154,6 +154,10 @@ $messages['cs'] = array(
 	'ts-kml-on-ol-help' => 'Nápověda',
 	'ts-kml-on-ol-all' => 'Všechny',
 	'ts-kml-on-ol-map-by' => 'Mapa z',
+	'ts-kml-on-ol-openstreetmap' => 'OpenStreetMap',
+	'ts-kml-on-ol-openstreetmap-contributors' => 'přispěvatelé OpenStreetMap',
+	'ts-kml-on-ol-wikipedia' => 'Wikipedie',
+	'ts-kml-on-ol-coat-of-arms' => 'Znaky',
 );
 
 /** German (Deutsch)
