@@ -228,9 +228,12 @@ $messages['et'] = array(
 	'ts-kml-on-ol-options' => 'Sätted',
 	'ts-kml-on-ol-languages' => 'Keeled',
 	'ts-kml-on-ol-thumbnails' => 'Pisipildid',
-	'ts-kml-on-ol-help' => 'Juhend',
+	'ts-kml-on-ol-help' => 'abi',
 	'ts-kml-on-ol-all' => 'Kõik',
 	'ts-kml-on-ol-map-by' => 'Kaart:',
+	'ts-kml-on-ol-openstreetmap-contributors' => 'OpenStreetMapi kaastöölised',
+	'ts-kml-on-ol-wikipedia' => 'Vikipeedia',
+	'ts-kml-on-ol-coat-of-arms' => 'Vapid'
 );
 
 /** Basque (euskara)
